@@ -33,4 +33,9 @@ class Products extends Model
     {
         return $this->belongsTo(Brands::class, 'brand_id');
     }
+
+    public function purchases()
+    {
+        return $this->belongsToMany(Purchases::class)->withPivot('quantity', 'subtotal')->withTimestamps();
+    }
 }
