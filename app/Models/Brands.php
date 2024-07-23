@@ -8,10 +8,10 @@ use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-class Categories extends Model
+class Brands extends Model
 {
     use HasFactory, AsSource, Filterable, Attachable;
-    protected $fillable =["categorie"];
+    protected $fillable =["brand"];
 
     // Relación con la tabla 'products'
     public function products()

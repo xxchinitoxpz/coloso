@@ -2,20 +2,20 @@
 
 namespace App\Orchid\Resources;
 
-use App\Models\Categories;
+use App\Models\Brands;
 use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
 
-class CategoriesResource extends Resource
+class BrandResource extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = Categories::class;
+    public static $model = Brands::class;
 
     /**
      * Get the fields displayed by the resource.
@@ -25,9 +25,9 @@ class CategoriesResource extends Resource
     public function fields(): array
     {
         return [
-            Input::make('categorie')
-                ->title('Categorie')
-                ->placeholder('Enter categorie here'),
+            Input::make('brand')
+                ->title('Brand')
+                ->placeholder('Enter brand here'),
         ];
     }
 
@@ -41,7 +41,7 @@ class CategoriesResource extends Resource
         return [
             TD::make('id'),
 
-            TD::make('categorie'),
+            TD::make('brand'),
 
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
@@ -64,7 +64,7 @@ class CategoriesResource extends Resource
     {
         return [
             Sight::make('id'),
-            Sight::make('categorie'),
+            Sight::make('brand'),
         ];
     }
 
@@ -85,7 +85,7 @@ class CategoriesResource extends Resource
      */
     public static function permission(): ?string
     {
-        return 'private-categorie-resource';
+        return 'private-brand-resource';
     }
 
     /**
