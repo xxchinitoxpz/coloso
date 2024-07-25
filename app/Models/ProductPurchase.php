@@ -8,13 +8,8 @@ use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-class Purchases extends Model
+class ProductPurchase extends Model
 {
     use HasFactory, AsSource, Filterable, Attachable;
-    protected $fillable = ['total'];
-
-    public function products()
-    {
-        return $this->belongsToMany(Products::class)->withPivot('quantity','subtotal')->withTimestamps();
-    }
+    protected $fillable = ['product_id','purchase_id','quantity','subtotal'];
 }

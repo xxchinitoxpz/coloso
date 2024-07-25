@@ -2,6 +2,7 @@
 
 namespace App\Orchid\Resources;
 
+use App\Models\Purchases;
 use Orchid\Crud\Resource;
 use Orchid\Screen\TD;
 
@@ -12,7 +13,7 @@ class PurchaseResource extends Resource
      *
      * @var string
      */
-    public static $model = '';
+    public static $model = Purchases::class;
 
     /**
      * Get the fields displayed by the resource.
