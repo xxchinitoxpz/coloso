@@ -36,6 +36,8 @@ class Products extends Model
 
     public function purchases()
     {
-        return $this->belongsToMany(Purchases::class)->withPivot('quantity', 'subtotal')->withTimestamps();
+        return $this->belongsToMany(Purchases::class, 'product_purchase', 'product_id', 'purchase_id')
+                    ->withPivot('quantity', 'subtotal')
+                    ->withTimestamps();
     }
 }

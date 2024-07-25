@@ -12,6 +12,9 @@ use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
+use App\Orchid\Screens\PurchaseDetailScreen;
+use App\Orchid\Screens\PurchaseEditScreen;
+use App\Orchid\Screens\PurchaseListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
@@ -102,3 +105,8 @@ Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.ex
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
+$this->router->screen('purchase/list', PurchaseListScreen::class)->name('platform.purchase.list');
+$this->router->screen('purchase/create', PurchaseEditScreen::class)->name('platform.purchase.create');
+$this->router->screen('purchase/{purchase}/edit', PurchaseEditScreen::class)->name('platform.purchase.edit');
+Route::screen('purchase/{purchase}/details', PurchaseDetailScreen::class)
+    ->name('platform.purchase.details');

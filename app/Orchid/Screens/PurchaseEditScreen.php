@@ -8,21 +8,26 @@ use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Fields\Relation;
-use Orchid\Screen\Layout;
+use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Screen;
+use Orchid\Support\Facades\Alert;
+use Illuminate\Http\Request;
+use Orchid\Screen\Actions\ModalToggle;
+use Orchid\Screen\Fields\Label;
 
 class PurchaseEditScreen extends Screen
 {
     public $venta;
+
     /**
      * Fetch data to be displayed on the screen.
      *
      * @return array
      */
-    public function query(Purchases $venta): iterable
+    public function query(Purchases $purchase): iterable
     {
         return [
-            'venta' => $venta,
+            'purchase' => $purchase,
         ];
     }
 
@@ -33,7 +38,7 @@ class PurchaseEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'PurchaseEditScreen';
+        return 'Create/Edit Purchase';
     }
 
     /**
@@ -44,21 +49,13 @@ class PurchaseEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Crear Venta')
-                ->icon('pencil')
-                ->method('createOrUpdate')
-                ->canSee(!$this->venta->exists),
+            Button::make('Save')
+                ->icon('check')
+                ->method('save'),
+            ModalToggle::make('Summary')
+                ->icon('eye')
+                ->modal('showSummary'),
 
-            Button::make('Actualizar Venta')
-                ->icon('note')
-                ->method('createOrUpdate')
-                ->canSee($this->venta->exists),
-
-            Button::make('Eliminar')
-                ->icon('trash')
-                ->confirm('¿Estás seguro de que deseas eliminar esta venta?')
-                ->method('remove')
-                ->canSee($this->venta->exists),
         ];
     }
 
@@ -67,37 +64,90 @@ class PurchaseEditScreen extends Screen
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
-    public function layout(): iterable
+    public function layout(): array
     {
+        $products = old('products', [null]);
+        $quantities = old('quantities', [1]);
+
+        $productFields = [];
+        foreach ($products as $index => $product) {
+            $productFields[] = Layout::rows([
+                Relation::make("products[$index]")
+                    ->title('Product')
+                    ->fromModel(Products::class, 'name')
+                    ->required(),
+                Input::make("quantities[$index]")
+                    ->title('Quantity')
+                    ->type('number')
+                    ->required()
+                    ->step(1)
+                    ->value($quantities[$index]),
+            ]);
+        }
+
         return [
 
-            DateTimer::make('venta.fecha')
-                ->title('Fecha')
-                ->required(),
-
-            Input::make('venta.total')
-                ->title('Total')
-                ->type('number')
-                ->required(),
-
-            Repeater::make('productos')
-                ->title('Productos')
-                ->layout([
-                    Relation::make('productos.[]')
-                        ->fromModel(Products::class, 'nombre')
-                        ->title('Producto')
-                        ->required(),
-                    Input::make('cantidad')
-                        ->title('Cantidad')
-                        ->type('number')
-                        ->required(),
-                    Input::make('precio')
-                        ->title('Precio')
-                        ->type('number')
-                        ->required(),
-
-                ]),
-
+            ...$productFields,
+            Layout::rows([
+                Button::make('Add Another Product')
+                    ->icon('plus')
+                    ->method('addProduct'),
+            ]),
+            Layout::modal(
+                'showSummary',
+                Layout::rows([])
+            )->withoutApplyButton()
+                ->withoutCloseButton(),
         ];
+    }
+
+    public function save(Request $request, Purchases $purchase)
+    {
+        $products = $request->get('products', []);
+        $quantities = $request->get('quantities', []);
+
+        // Crear el array para sincronizar los productos
+        $syncData = [];
+        $total = 0;
+        foreach ($products as $index => $productId) {
+            if ($productId) {
+                $product = Products::find($productId);
+                $quantity = $quantities[$index] ?? 1;
+                $subtotal = $quantity * $product->sale_price;
+                $total += $subtotal;
+
+                $syncData[$productId] = [
+                    'quantity' => $quantity,
+                    'subtotal' => $subtotal,
+                ];
+            }
+        }
+
+        // Guardar los datos de la compra con el total calculado
+        $purchase->fill(['total' => $total])->save();
+
+        // Sincronizar los productos con sus cantidades y subtotales
+        $purchase->products()->sync($syncData);
+
+        Alert::info('You have successfully created/updated a purchase.');
+
+        return redirect()->route('platform.purchase.list');
+    }
+
+
+
+    public function addProduct(Request $request)
+    {
+        $request->validate([
+            'products' => 'required|array',
+            'quantities' => 'required|array'
+        ]);
+
+        $products = $request->get('products', []);
+        $quantities = $request->get('quantities', []);
+        $products[] = null;
+        $quantities[] = 1;
+
+        return back()->withInput(compact('products', 'quantities'));
     }
 }

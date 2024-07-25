@@ -3,9 +3,11 @@
 namespace App\Orchid\Screens;
 
 use App\Models\Purchases;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
-use Orchid\Screen\Layout;
+use Orchid\Support\Facades\Layout;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
 
 class PurchaseListScreen extends Screen
 {
@@ -17,7 +19,7 @@ class PurchaseListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'ventas' => Purchases::paginate(),
+            'purchases' => Purchases::paginate(),
         ];
     }
 
@@ -39,9 +41,9 @@ class PurchaseListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Crear Venta')
+            Link::make('Create Purchase')
                 ->icon('plus')
-                ->route('platform.venta.edit')
+                ->route('platform.purchase.create')
         ];
     }
 
@@ -53,21 +55,16 @@ class PurchaseListScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::columns('ventas', [
-                TD::make('id', 'ID')
-                    ->sort(),
-                TD::make('fecha', 'Fecha')
-                    ->sort(),
-                TD::make('total', 'Total')
-                    ->sort(),
-                TD::make('created_at', 'Creado')
-                    ->sort(),
-                TD::make('updated_at', 'Actualizado')
-                    ->sort(),
-                TD::make('Acciones')
-                    ->render(function (Venta $venta) {
-                        return Link::make('Editar')
-                            ->route('platform.venta.edit', $venta);
+            Layout::table('purchases', [
+                TD::make('id', 'ID'),
+                TD::make('total', 'Total'),
+                TD::make('created_at', 'Created At'),
+                TD::make('updated_at', 'Updated At'),
+                TD::make('details', 'Details')
+                    ->render(function (Purchases $purchase) {
+                        return Link::make('')
+                            ->icon('eye')
+                            ->route('platform.purchase.details', $purchase->id);
                     }),
             ]),
         ];

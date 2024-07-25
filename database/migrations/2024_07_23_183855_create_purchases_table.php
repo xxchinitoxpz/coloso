@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total', 7, 2);
+            $table->decimal('total', 7, 2)->nullable();
             $table->timestamps();
         });
     }
