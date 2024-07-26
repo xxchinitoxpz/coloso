@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courts', function (Blueprint $table) {
+        Schema::create('tariffs', function (Blueprint $table) {
             $table->id();
-            $table->string('court');
-            $table->boolean('state')->default(0);
+            $table->char('schedule', 1); // D->DIA, T->TARDE, N->NOCHE
+            $table->decimal('price', 7, 2);
             $table->timestamps();
-            $table->foreignId('type_court_id')->constrained('type_courts')->onDelete('cascade');
+            $table->foreignId('court_id')->constrained('courts')->onDelete('cascade');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courts');
+        Schema::dropIfExists('tariffs');
     }
 };

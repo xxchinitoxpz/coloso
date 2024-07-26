@@ -8,17 +8,11 @@ use Orchid\Attachment\Attachable;
 use Orchid\Filters\Filterable;
 use Orchid\Screen\AsSource;
 
-class TypeCourt extends Model
+class TypePayment extends Model
 {
     use HasFactory, AsSource, Filterable, Attachable;
     
     protected $fillable = [
-        'type_court'
+        'type_payment'
     ];
-
-    // Relación con la tabla 'court'
-    public function court()
-    {
-        return $this->hasMany(Court::class, 'type_court_id');
-    }
 }
