@@ -50,6 +50,11 @@ class PurchaseDetailScreen extends Screen
     public function layout(): iterable
     {
         return [
+            Layout::view('breadcrumbs', ['breadcrumbs' => [
+                ['name' => 'Home', 'route' => route('platform.main')],
+                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
+                ['name' => 'Purchase Details'],
+            ]]),
             Layout::table('purchase.products', [ // Usar 'purchase.products' para acceder a la relación
                 TD::make('name', 'Product Name')
                     ->render(function ($product) {
@@ -58,7 +63,6 @@ class PurchaseDetailScreen extends Screen
                 TD::make('pivot.quantity', 'Quantity'),
                 TD::make('pivot.subtotal', 'Subtotal'),
             ]),
-            
         ];
     }
 }

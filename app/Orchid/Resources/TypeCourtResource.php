@@ -98,4 +98,9 @@ class TypeCourtResource extends Resource
     {
         return 10;
     }
+    
+    public static function icon(): string
+    {
+        return 'bricks'; // El ícono deseado
+    }
 }

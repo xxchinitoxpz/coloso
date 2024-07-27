@@ -78,7 +78,7 @@ class TariffResource extends Resource
                 }),
             TD::make('type_court', 'Type of Court')
                 ->render(function ($tariff) {
-                    return $tariff->court && $tariff->court->typeCourt ? $tariff->court->typeCourt->type_court : 'N/A';
+                    return $tariff->court && $tariff->court->type_court ? $tariff->court->type_court->type_court : 'N/A';
                 }),
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
@@ -99,7 +99,22 @@ class TariffResource extends Resource
      */
     public function legend(): array
     {
-        return [];
+        return [
+            Sight::make('id'),
+            Sight::make('schedule')
+                ->render(function ($tariff) {
+                    return $tariff->schedule_label;
+                }),
+            Sight::make('price'),
+            Sight::make('court', 'Court')
+                ->render(function ($tariff) {
+                    return $tariff->court ? $tariff->court->court : 'N/A';
+                }),
+            Sight::make('type_court', 'Type of Court')
+                ->render(function ($tariff) {
+                    return $tariff->court && $tariff->court->type_court ? $tariff->court->type_court->type_court : 'N/A';
+                }),
+        ];
     }
 
     /**
@@ -110,5 +125,30 @@ class TariffResource extends Resource
     public function filters(): array
     {
         return [];
+    }
+
+    /**
+     * Get the permission key for the resource.
+     *
+     * @return string|null
+     */
+    public static function permission(): ?string
+    {
+        return 'private-tariff-resource';
+    }
+
+    /**
+     * Get the number of models to return per page
+     *
+     * @return int
+     */
+    public static function perPage(): int
+    {
+        return 10;
+    }
+
+    public static function icon(): string
+    {
+        return 'cash'; // El ícono deseado
     }
 }

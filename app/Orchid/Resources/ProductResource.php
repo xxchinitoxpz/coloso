@@ -206,4 +206,9 @@ class ProductResource extends Resource
     {
         return 10;
     }
+
+    public static function icon(): string
+    {
+        return 'cup-straw'; // El ícono deseado
+    }
 }

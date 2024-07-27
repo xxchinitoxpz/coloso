@@ -7,6 +7,8 @@ use Orchid\Crud\Resource;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Sight;
 use Orchid\Screen\TD;
+use Orchid\Screen\Actions\Menu;
+use Orchid\Support\Facades\Dashboard;
 
 class TypePaymentResource extends Resource
 {
@@ -97,5 +99,10 @@ class TypePaymentResource extends Resource
     public static function perPage(): int
     {
         return 10;
+    }
+
+    public static function icon(): string
+    {
+        return 'wallet'; // El ícono deseado
     }
 }

@@ -19,7 +19,7 @@ class PurchaseListScreen extends Screen
     public function query(): iterable
     {
         return [
-            'purchases' => Purchases::paginate(),
+            'purchases' => Purchases::orderBy('created_at', 'desc')->paginate(),
         ];
     }
 
@@ -43,10 +43,11 @@ class PurchaseListScreen extends Screen
         return [
             Link::make('Create Purchase')
                 ->icon('plus')
-                ->route('platform.purchase.create')
+                ->route('platform.purchase.create'),
+                
         ];
     }
-
+    
     /**
      * The screen's layout elements.
      *
@@ -55,6 +56,10 @@ class PurchaseListScreen extends Screen
     public function layout(): iterable
     {
         return [
+            Layout::view('breadcrumbs', ['breadcrumbs' => [
+                ['name' => 'Home', 'route' => route('platform.main')],
+                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
+            ]]),
             Layout::table('purchases', [
                 TD::make('id', 'ID'),
                 TD::make('total', 'Total'),
@@ -69,4 +74,6 @@ class PurchaseListScreen extends Screen
             ]),
         ];
     }
+      
+    
 }

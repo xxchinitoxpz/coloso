@@ -56,10 +56,10 @@ class CustomersResource extends Resource
 
             TD::make('phone'),
 
-            // TD::make('created_at', 'Date of creation')
-            //     ->render(function ($model) {
-            //         return $model->created_at->toDateTimeString();
-            //     }),
+            TD::make('created_at', 'Date of creation')
+                ->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                }),
 
             // TD::make('updated_at', 'Update date')
             //     ->render(function ($model) {
@@ -111,5 +111,10 @@ class CustomersResource extends Resource
     public static function perPage(): int
     {
         return 10;
+    }
+
+    public static function icon(): string
+    {
+        return 'people'; // El ícono deseado
     }
 }

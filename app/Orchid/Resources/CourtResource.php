@@ -140,4 +140,9 @@ class CourtResource extends Resource
     {
         return 10;
     }
+
+    public static function icon(): string
+    {
+        return 'dribbble'; // El ícono deseado
+    }
 }

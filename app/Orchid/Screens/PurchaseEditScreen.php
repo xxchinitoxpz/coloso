@@ -14,10 +14,12 @@ use Orchid\Support\Facades\Alert;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Fields\Label;
+use Illuminate\Support\Facades\DB;
+use Orchid\Screen\Layouts\Modal;
 
 class PurchaseEditScreen extends Screen
 {
-    public $venta;
+    public $purchase;
 
     /**
      * Fetch data to be displayed on the screen.
@@ -27,7 +29,7 @@ class PurchaseEditScreen extends Screen
     public function query(Purchases $purchase): iterable
     {
         return [
-            'purchase' => $purchase,
+            'purchase' => $purchase->load('products'),
         ];
     }
 
@@ -52,9 +54,9 @@ class PurchaseEditScreen extends Screen
             Button::make('Save')
                 ->icon('check')
                 ->method('save'),
-            ModalToggle::make('Summary')
-                ->icon('eye')
-                ->modal('showSummary'),
+            // ModalToggle::make('Summary')
+            //     ->icon('eye')
+            //     ->modal('showSummary'),
 
         ];
     }
@@ -86,7 +88,11 @@ class PurchaseEditScreen extends Screen
         }
 
         return [
-
+            Layout::view('breadcrumbs', ['breadcrumbs' => [
+                ['name' => 'Home', 'route' => route('platform.main')],
+                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
+                ['name' => $this->purchase->exists ? 'Edit Purchase' : 'Create Purchase'],
+            ]]),
             ...$productFields,
             Layout::rows([
                 Button::make('Add Another Product')
@@ -95,44 +101,64 @@ class PurchaseEditScreen extends Screen
             ]),
             Layout::modal(
                 'showSummary',
-                Layout::rows([])
-            )->withoutApplyButton()
-                ->withoutCloseButton(),
+                Layout::rows([
+                    
+                ])
+            )
+                ->withoutApplyButton()
+                ->withoutCloseButton()
+                ->size(Modal::SIZE_XL)
+                ->type(Modal::TYPE_RIGHT),
         ];
     }
+
 
     public function save(Request $request, Purchases $purchase)
     {
         $products = $request->get('products', []);
         $quantities = $request->get('quantities', []);
 
-        // Crear el array para sincronizar los productos
-        $syncData = [];
-        $total = 0;
-        foreach ($products as $index => $productId) {
-            if ($productId) {
-                $product = Products::find($productId);
-                $quantity = $quantities[$index] ?? 1;
-                $subtotal = $quantity * $product->sale_price;
-                $total += $subtotal;
+        DB::beginTransaction();
+        try {
+            // Crear el array para sincronizar los productos
+            $syncData = [];
+            $total = 0;
+            foreach ($products as $index => $productId) {
+                if ($productId) {
+                    $product = Products::find($productId);
+                    $quantity = $quantities[$index] ?? 1;
+                    $subtotal = $quantity * $product->purchase_price; // Usamos purchase_price en lugar de sale_price para calcular el subtotal de la compra
+                    $total += $subtotal;
 
-                $syncData[$productId] = [
-                    'quantity' => $quantity,
-                    'subtotal' => $subtotal,
-                ];
+                    // Actualizar el stock del producto
+                    $product->stock += $quantity;
+                    $product->save();
+
+                    $syncData[$productId] = [
+                        'quantity' => $quantity,
+                        'subtotal' => $subtotal,
+                    ];
+                }
             }
+
+            // Guardar los datos de la compra con el total calculado
+            $purchase->fill(['total' => $total])->save();
+
+            // Sincronizar los productos con sus cantidades y subtotales
+            $purchase->products()->sync($syncData);
+
+            DB::commit();
+
+            Alert::info('You have successfully created/updated a purchase.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Alert::error('An error occurred while saving the purchase: ' . $e->getMessage());
         }
-
-        // Guardar los datos de la compra con el total calculado
-        $purchase->fill(['total' => $total])->save();
-
-        // Sincronizar los productos con sus cantidades y subtotales
-        $purchase->products()->sync($syncData);
-
-        Alert::info('You have successfully created/updated a purchase.');
 
         return redirect()->route('platform.purchase.list');
     }
+
+
 
 
 
