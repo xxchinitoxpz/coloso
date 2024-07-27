@@ -66,4 +66,9 @@ class PurchaseResource extends Resource
     {
         return [];
     }
+
+    public static function permission(): ?string
+    {
+        return 'private-pur-resource';
+    }
 }

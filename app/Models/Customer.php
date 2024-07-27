@@ -12,4 +12,14 @@ class Customer extends Model
 {
     use HasFactory, AsSource, Filterable, Attachable;
     protected $fillable =["name","dni","phone"];
+
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
 }
