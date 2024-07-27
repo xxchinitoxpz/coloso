@@ -27,9 +27,14 @@ class TariffResource extends Resource
     public function fields(): array
     {
         return [
-            Input::make('schedule')
+            Select::make('schedule')
                 ->title('Schedule')
-                ->placeholder('Enter schedule here')
+                ->options([
+                    'D' => 'Día',
+                    'T' => 'Tarde',
+                    'N' => 'Noche',
+                ])
+                ->empty('Select schedule')
                 ->required(),
             Input::make('price')
                 ->title('Price')
@@ -62,9 +67,18 @@ class TariffResource extends Resource
     {
         return [
             TD::make('id'),
+            TD::make('schedule')
+                ->render(function ($tariff) {
+                    return $tariff->schedule_label;
+                }),
+            TD::make('price'),
             TD::make('court', 'Court')
                 ->render(function ($tariff) {
                     return $tariff->court ? $tariff->court->court : 'N/A';
+                }),
+            TD::make('type_court', 'Type of Court')
+                ->render(function ($tariff) {
+                    return $tariff->court && $tariff->court->typeCourt ? $tariff->court->typeCourt->type_court : 'N/A';
                 }),
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {

@@ -18,4 +18,16 @@ class Tariff extends Model
     {
         return $this->belongsTo(Court::class, 'court_id');
     }
+    
+    // Accessor for schedule
+    public function getScheduleLabelAttribute()
+    {
+        $schedules = [
+            'D' => 'Día',
+            'T' => 'Tarde',
+            'N' => 'Noche',
+        ];
+
+        return $schedules[$this->schedule] ?? $this->schedule;
+    }
 }

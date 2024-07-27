@@ -15,4 +15,9 @@ class TypePayment extends Model
     protected $fillable = [
         'type_payment'
     ];
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

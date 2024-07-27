@@ -19,4 +19,20 @@ class Sale extends Model
                     ->withPivot('quantity', 'subtotal')
                     ->withTimestamps();
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 }
