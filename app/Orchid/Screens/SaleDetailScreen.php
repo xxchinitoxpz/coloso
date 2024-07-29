@@ -2,18 +2,24 @@
 
 namespace App\Orchid\Screens;
 
+use App\Models\Sale;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
+use Orchid\Support\Facades\Layout;
 
 class SaleDetailScreen extends Screen
 {
+    public $sale;
     /**
      * Fetch data to be displayed on the screen.
      *
      * @return array
      */
-    public function query(): iterable
+    public function query(Sale $sale): iterable
     {
-        return [];
+        return [
+            'sale' => $sale->load('products', 'customer'),
+        ];
     }
 
     /**
@@ -43,6 +49,26 @@ class SaleDetailScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+            Layout::view('breadcrumbs', ['breadcrumbs' => [
+                ['name' => 'Home', 'route' => route('platform.main')],
+                ['name' => 'Sales', 'route' => route('platform.sale.list')],
+                ['name' => 'Sale Details'],
+            ]]),
+
+            // TD::make('sale.customer_id', 'Customer Name')
+            // ->render(function ($sale) {
+            //     return $sale->customer->name;
+            // }),
+            
+            Layout::table('sale.products', [
+                TD::make('name', 'Product Name')
+                    ->render(function ($product) {
+                        return $product->name;
+                    }),
+                TD::make('pivot.quantity', 'Quantity'),
+                TD::make('pivot.subtotal', 'Subtotal'),
+            ]),
+        ];
     }
 }

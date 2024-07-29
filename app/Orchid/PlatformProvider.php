@@ -84,7 +84,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.purchase.list')
                 ->permission('platform.systems.roles'),
             Menu::make(__('Sales'))
-                ->icon('bs.basket')
+                ->icon('bs.cart-plus')
                 ->route('platform.sale.list')
                 ->permission('platform.systems.roles')
                 ->divider(),
