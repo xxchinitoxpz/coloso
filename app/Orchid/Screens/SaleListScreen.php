@@ -2,7 +2,11 @@
 
 namespace App\Orchid\Screens;
 
+use App\Models\Sale;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
+use Orchid\Support\Facades\Layout;
 
 class SaleListScreen extends Screen
 {
@@ -13,7 +17,9 @@ class SaleListScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        return [
+            'sales' => Sale::orderBy('created_at', 'desc')->paginate(),
+        ];
     }
 
     /**
@@ -33,7 +39,12 @@ class SaleListScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            Link::make('Create Sale')
+                ->icon('plus')
+                ->route('platform.sale.create'),
+              
+        ];
     }
 
     /**
@@ -43,6 +54,27 @@ class SaleListScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [];
+        return [
+            Layout::view('breadcrumbs', ['breadcrumbs' => [
+                ['name' => 'Home', 'route' => route('platform.main')],
+                ['name' => 'Sales', 'route' => route('platform.sale.list')],
+            ]]),
+            Layout::table('sales', [
+                TD::make('id', 'ID'),
+                TD::make('total', 'Total'),
+                TD::make('balance', 'Balance'),
+                TD::make('final_payment_date', 'Final Payment Date'),
+                TD::make('state', 'State'),
+                TD::make('customer_id', 'Customer'),
+                TD::make('created_at', 'Created At'),
+                TD::make('updated_at', 'Updated At'),
+                TD::make('details', 'Details')
+                    ->render(function (Sale $sale) {
+                        return Link::make('')
+                            ->icon('eye')
+                            ->route('platform.sale.details', $sale->id);
+                    }),
+            ]),
+        ];
     }
 }

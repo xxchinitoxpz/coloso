@@ -17,6 +17,9 @@ use App\Orchid\Screens\PurchaseEditScreen;
 use App\Orchid\Screens\PurchaseListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
+use App\Orchid\Screens\SaleDetailScreen;
+use App\Orchid\Screens\SaleEditScreen;
+use App\Orchid\Screens\SaleListScreen;
 use App\Orchid\Screens\User\UserEditScreen;
 use App\Orchid\Screens\User\UserListScreen;
 use App\Orchid\Screens\User\UserProfileScreen;
@@ -110,3 +113,8 @@ $this->router->screen('purchase/create', PurchaseEditScreen::class)->name('platf
 $this->router->screen('purchase/{purchase}/edit', PurchaseEditScreen::class)->name('platform.purchase.edit');
 Route::screen('purchase/{purchase}/details', PurchaseDetailScreen::class)
     ->name('platform.purchase.details');
+
+$this->router->screen('sale/list', SaleListScreen::class)->name('platform.sale.list');
+$this->router->screen('sale/create', SaleEditScreen::class)->name('platform.sale.create');
+$this->router->screen('sale/{purchase}/edit', SaleEditScreen::class)->name('platform.sale.edit');
+Route::screen('sale/{sale}/details', SaleDetailScreen::class)->name('platform.sale.details');
