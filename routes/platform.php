@@ -133,4 +133,4 @@ $this->router->post('rental/culminate', [RentalListScreen::class, 'culminateRent
     ->name('platform.rental.culminate');
 
 Route::screen('payments', PaymentListScreen::class)->name('platform.payment.list');
-Route::screen('payment/{payment?}', PaymentEditScreen::class)->name('platform.payment.create');
+Route::screen('payment/create', PaymentEditScreen::class)->name('platform.payment.create');

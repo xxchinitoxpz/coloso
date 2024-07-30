@@ -13,6 +13,7 @@ use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PaymentEditScreen extends Screen
 {
@@ -46,6 +47,7 @@ class PaymentEditScreen extends Screen
                 Input::make('payment.amount')
                     ->title('Amount')
                     ->type('number')
+                    ->step('0.01') // Permitir decimales
                     ->required(),
                 Select::make('payment.type_payment_id')
                     ->title('Type Payment')
@@ -55,7 +57,7 @@ class PaymentEditScreen extends Screen
                 Select::make('payment.sale_id')
                     ->title('Sale')
                     ->options(Sale::where('state', false)->with('customer')->get()->mapWithKeys(function ($sale) {
-                        return [$sale->id => $sale->customer_debt];
+                        return [$sale->id => $sale->customer->name . ' | Debt: ' . ($sale->total - $sale->balance)];
                     })->toArray())
                     ->empty('Select Sale')
                     ->required(),
@@ -67,7 +69,23 @@ class PaymentEditScreen extends Screen
     {
         DB::beginTransaction();
         try {
+            // Guardar el pago
             $payment->fill($request->get('payment'))->save();
+
+            // Obtener la venta asociada
+            $sale = Sale::find($payment->sale_id);
+
+            // Actualizar el balance de la venta
+            $sale->balance += $payment->amount;
+
+            // Verificar si la venta está completamente pagada
+            if ($sale->balance >= $sale->total) {
+                $sale->state = true;
+                $sale->final_payment_date = Carbon::now(); // Actualizar la fecha de pago final
+            }
+
+            $sale->save();
+
             DB::commit();
             Alert::info('You have successfully created/updated a payment.');
         } catch (\Exception $e) {
