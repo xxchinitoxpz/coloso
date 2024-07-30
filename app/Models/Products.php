@@ -37,14 +37,19 @@ class Products extends Model
     public function purchases()
     {
         return $this->belongsToMany(Purchases::class, 'product_purchase', 'product_id', 'purchase_id')
-                    ->withPivot('quantity', 'subtotal')
-                    ->withTimestamps();
+            ->withPivot('quantity', 'subtotal')
+            ->withTimestamps();
     }
 
     public function sales()
     {
         return $this->belongsToMany(Sale::class, 'product_sales', 'product_id', 'purchase_id')
-                    ->withPivot('quantity', 'subtotal')
-                    ->withTimestamps();
+            ->withPivot('quantity', 'subtotal')
+            ->withTimestamps();
+    }
+
+    public function getPriceDisplayAttribute()
+    {
+        return "{$this->name} - {$this->sale_price}";
     }
 }

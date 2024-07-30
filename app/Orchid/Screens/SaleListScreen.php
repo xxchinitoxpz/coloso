@@ -43,7 +43,7 @@ class SaleListScreen extends Screen
             Link::make('Create Sale')
                 ->icon('plus')
                 ->route('platform.sale.create'),
-              
+
         ];
     }
 
@@ -63,9 +63,20 @@ class SaleListScreen extends Screen
                 TD::make('id', 'ID'),
                 TD::make('total', 'Total'),
                 TD::make('balance', 'Balance'),
-                TD::make('final_payment_date', 'Final Payment Date'),
-                TD::make('state', 'State'),
-                TD::make('customer_id', 'Customer'),
+                TD::make('final_payment_date', 'Final Payment Date')
+                    ->render(function (Sale $sale) {
+                        return $sale->final_payment_date
+                            ? $sale->final_payment_date->format('Y-m-d')
+                            : 'En Proceso';
+                    }),
+                TD::make('state', 'State')
+                    ->render(function (Sale $sale) {
+                        return $sale->state ? 'Pagado' : 'Por Pagar';
+                    }),
+                TD::make('customer_id', 'Customer')
+                    ->render(function (Sale $sale) {
+                        return $sale->customer ? $sale->customer->name : 'Unknown';
+                    }),
                 TD::make('created_at', 'Created At'),
                 TD::make('updated_at', 'Updated At'),
                 TD::make('details', 'Details')

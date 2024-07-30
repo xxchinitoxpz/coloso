@@ -15,6 +15,8 @@ use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\PurchaseDetailScreen;
 use App\Orchid\Screens\PurchaseEditScreen;
 use App\Orchid\Screens\PurchaseListScreen;
+use App\Orchid\Screens\RentalEditScreen;
+use App\Orchid\Screens\RentalListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\SaleDetailScreen;
@@ -118,3 +120,13 @@ $this->router->screen('sale/list', SaleListScreen::class)->name('platform.sale.l
 $this->router->screen('sale/create', SaleEditScreen::class)->name('platform.sale.create');
 $this->router->screen('sale/{purchase}/edit', SaleEditScreen::class)->name('platform.sale.edit');
 Route::screen('sale/{sale}/details', SaleDetailScreen::class)->name('platform.sale.details');
+
+$this->router->screen('rental/list', RentalListScreen::class)->name('platform.rental.list');
+$this->router->screen('rental/create', RentalEditScreen::class)->name('platform.rental.create');
+
+
+// routes/platform.php
+
+$this->router->post('rental/culminate', [RentalListScreen::class, 'culminateRental'])
+    ->name('platform.rental.culminate');
+

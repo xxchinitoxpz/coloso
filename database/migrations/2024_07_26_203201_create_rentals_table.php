@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->time('start_time');
             $table->integer('total_hours');
-            $table->time('end_time');
+            $table->time('end_time')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->foreignId('court_id')->constrained('courts')->onDelete('cascade');

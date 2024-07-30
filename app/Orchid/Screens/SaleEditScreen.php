@@ -14,9 +14,6 @@ use Orchid\Screen\Fields\Relation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Orchid\Screen\Actions\ModalToggle;
-use Orchid\Screen\Fields\Label;
-use Orchid\Screen\Layouts\Modal;
 
 class SaleEditScreen extends Screen
 {
@@ -54,9 +51,6 @@ class SaleEditScreen extends Screen
             Button::make('Save')
                 ->icon('check')
                 ->method('save'),
-            // ModalToggle::make('Summary')
-            //     ->icon('eye')
-            //     ->modal('showSummary'),
         ];
     }
 
@@ -70,13 +64,15 @@ class SaleEditScreen extends Screen
     {
         $products = old('products', [null]);
         $quantities = old('quantities', [1]);
+        $customerId = old('customer_id', $this->sale->customer_id ?? null);
 
         $productFields = [];
         foreach ($products as $index => $product) {
             $productFields[] = Layout::rows([
                 Relation::make("products[$index]")
                     ->title('Product')
-                    ->fromModel(Products::class, 'name')
+                    ->fromModel(Products::class, 'name', 'id')
+                    ->displayAppend('priceDisplay')
                     ->required(),
                 Input::make("quantities[$index]")
                     ->title('Quantity')
@@ -97,23 +93,15 @@ class SaleEditScreen extends Screen
                 Relation::make('customer_id')
                     ->title('Customer')
                     ->fromModel(Customer::class, 'name')
-                    ->required(),
-                
+                    ->required()
+                    ->value($customerId),
             ]),
             ...$productFields,
             Layout::rows([
                 Button::make('Add Another Product')
                     ->icon('plus')
                     ->method('addProduct'),
-            ]),
-            Layout::modal(
-                'showSummary',
-                Layout::rows([])
-            )
-                ->withoutApplyButton()
-                ->withoutCloseButton()
-                ->size(Modal::SIZE_XL)
-                ->type(Modal::TYPE_RIGHT),
+            ])
         ];
     }
 
@@ -184,6 +172,6 @@ class SaleEditScreen extends Screen
         $products[] = null;
         $quantities[] = 1;
 
-        return back()->withInput(compact('products', 'quantities','customerId')); // Pasar el customer_id a la entrada
+        return back()->withInput(compact('products', 'quantities', 'customerId'));
     }
 }
