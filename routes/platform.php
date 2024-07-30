@@ -11,6 +11,8 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\PaymentEditScreen;
+use App\Orchid\Screens\PaymentListScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\PurchaseDetailScreen;
 use App\Orchid\Screens\PurchaseEditScreen;
@@ -130,3 +132,5 @@ $this->router->screen('rental/create', RentalEditScreen::class)->name('platform.
 $this->router->post('rental/culminate', [RentalListScreen::class, 'culminateRental'])
     ->name('platform.rental.culminate');
 
+Route::screen('payments', PaymentListScreen::class)->name('platform.payment.list');
+Route::screen('payment/{payment?}', PaymentEditScreen::class)->name('platform.payment.create');

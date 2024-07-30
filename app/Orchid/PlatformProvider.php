@@ -94,7 +94,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.systems.roles')
                 ->divider(),
 
-
+            Menu::make(__('Payments'))
+                ->icon('bs.credit-card')
+                ->route('platform.payment.list')
+                ->permission('platform.systems.roles')
+                ->divider(),
             // Menu::make('Documentation')
             //     ->title('Docs')
             //     ->icon('bs.box-arrow-up-right')

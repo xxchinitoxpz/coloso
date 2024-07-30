@@ -84,7 +84,7 @@ class SaleListScreen extends Screen
                         return Link::make('')
                             ->icon('eye')
                             ->route('platform.sale.details', $sale->id);
-                    }),
+                    }),    
             ]),
         ];
     }
