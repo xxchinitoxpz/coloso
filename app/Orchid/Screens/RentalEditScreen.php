@@ -42,6 +42,13 @@ class RentalEditScreen extends Screen
         ];
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.rentals',
+        ];
+    }
+
     public function layout(): array
     {
         return [

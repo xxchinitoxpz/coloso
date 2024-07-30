@@ -31,6 +31,13 @@ class PaymentEditScreen extends Screen
         return 'Create/Edit Payment';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.payments',
+        ];
+    }
+
     public function commandBar(): iterable
     {
         return [

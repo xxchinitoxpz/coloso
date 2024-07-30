@@ -36,6 +36,13 @@ class RentalListScreen extends Screen
         return 'Rentals';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.rentals',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *

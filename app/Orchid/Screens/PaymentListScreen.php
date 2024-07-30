@@ -32,6 +32,13 @@ class PaymentListScreen extends Screen
         return 'Payments';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.payments',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *

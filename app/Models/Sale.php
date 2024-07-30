@@ -12,6 +12,7 @@ class Sale extends Model
 {
     use HasFactory, AsSource, Filterable, Attachable;
     protected $fillable =["total","balance","final_payment_date","state","user_id","customer_id"];
+    protected $dates = ['final_payment_date'];
 
     public function products()
     {

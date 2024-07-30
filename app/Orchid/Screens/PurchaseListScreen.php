@@ -33,6 +33,13 @@ class PurchaseListScreen extends Screen
         return 'PurchaseListScreen';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.purchases',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *

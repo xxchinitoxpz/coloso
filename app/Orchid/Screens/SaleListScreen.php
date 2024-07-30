@@ -32,6 +32,13 @@ class SaleListScreen extends Screen
         return 'SaleListScreen';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.sales',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *
@@ -63,12 +70,7 @@ class SaleListScreen extends Screen
                 TD::make('id', 'ID'),
                 TD::make('total', 'Total'),
                 TD::make('balance', 'Balance'),
-                TD::make('final_payment_date', 'Final Payment Date')
-                    ->render(function (Sale $sale) {
-                        return $sale->final_payment_date
-                            ? $sale->final_payment_date->format('Y-m-d')
-                            : 'En Proceso';
-                    }),
+                TD::make('final_payment_date', 'Final Payment Date'),
                 TD::make('state', 'State')
                     ->render(function (Sale $sale) {
                         return $sale->state ? 'Pagado' : 'Por Pagar';
@@ -84,8 +86,10 @@ class SaleListScreen extends Screen
                         return Link::make('')
                             ->icon('eye')
                             ->route('platform.sale.details', $sale->id);
-                    }),    
+                    }),
             ]),
         ];
     }
+
+
 }

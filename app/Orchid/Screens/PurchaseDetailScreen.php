@@ -32,6 +32,13 @@ class PurchaseDetailScreen extends Screen
         return 'Purchase Details';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.purchases',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *

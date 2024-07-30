@@ -79,25 +79,34 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.systems.roles')
                 ->divider(),
 
+            Menu::make('Reports')
+                ->icon('archive')
+                ->title(__('Reports of coloso'))
+                ->list([
+                    Menu::make('Second Level Item 1')->icon('bs.bag')->sort(2),
+                    Menu::make('Second Level Item 2')->icon('bs.heart')->sort(0),
+                ])
+                ->divider(),
+
             Menu::make(__('Purchases'))
                 ->icon('bs.basket')
                 ->route('platform.purchase.list')
-                ->permission('platform.systems.roles')
+                ->permission('platform.systems.purchases')
                 ->title(__('Processes of coloso')),
             Menu::make(__('Sales'))
                 ->icon('bs.cart-plus')
                 ->route('platform.sale.list')
-                ->permission('platform.systems.roles'),
+                ->permission('platform.systems.sales'),
+
             Menu::make(__('Rentals'))
                 ->icon('bs.cookie')
                 ->route('platform.rental.list')
-                ->permission('platform.systems.roles')
-                ->divider(),
+                ->permission('platform.systems.rentals'),
 
             Menu::make(__('Payments'))
                 ->icon('bs.credit-card')
                 ->route('platform.payment.list')
-                ->permission('platform.systems.roles')
+                ->permission('platform.systems.payments')
                 ->divider(),
             // Menu::make('Documentation')
             //     ->title('Docs')
@@ -124,6 +133,12 @@ class PlatformProvider extends OrchidServiceProvider
             ItemPermission::group(__('System'))
                 ->addPermission('platform.systems.roles', __('Roles'))
                 ->addPermission('platform.systems.users', __('Users')),
+            ItemPermission::group(__('Processes'))
+                ->addPermission('platform.systems.purchases', __('Purchase'))
+                ->addPermission('platform.systems.sales', __('Sale'))
+                ->addPermission('platform.systems.rentals', __('Rental'))
+                ->addPermission('platform.systems.payments', __('Payment')),
+
         ];
     }
 }

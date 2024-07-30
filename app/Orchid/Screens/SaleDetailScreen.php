@@ -41,6 +41,12 @@ class SaleDetailScreen extends Screen
     {
         return [];
     }
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.sales',
+        ];
+    }
 
     /**
      * The screen's layout elements.
@@ -60,7 +66,7 @@ class SaleDetailScreen extends Screen
             // ->render(function ($sale) {
             //     return $sale->customer->name;
             // }),
-            
+
             Layout::table('sale.products', [
                 TD::make('name', 'Product Name')
                     ->render(function ($product) {

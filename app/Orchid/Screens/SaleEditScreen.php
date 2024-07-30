@@ -40,6 +40,13 @@ class SaleEditScreen extends Screen
         return 'Create/Edit Sale';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.sales',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *

@@ -43,6 +43,13 @@ class PurchaseEditScreen extends Screen
         return 'Create/Edit Purchase';
     }
 
+    public function permission(): ?iterable
+    {
+        return [
+            'platform.systems.purchases',
+        ];
+    }
+
     /**
      * The screen's action buttons.
      *
