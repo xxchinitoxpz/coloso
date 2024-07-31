@@ -68,9 +68,9 @@ class TotalDebtsScreen extends Screen
                 ['name' => 'Total Debts'],
             ]]),
             Layout::table('customers', [
-                TD::make('id', 'ID'),
-                TD::make('name', 'Name'),
-                TD::make('total_debt', 'Total Debt')
+                TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
+                TD::make('name', 'Name')->align(TD::ALIGN_CENTER),
+                TD::make('total_debt', 'Total Debt')->align(TD::ALIGN_CENTER)
                     ->render(function ($customer) {
                         return number_format($customer->total_debt, 2);
                     }),

@@ -62,15 +62,30 @@ class PaymentListScreen extends Screen
     {
         return [
             Layout::table('payments', [
-                TD::make('id', 'ID'),
-                TD::make('amount', 'Amount'),
+                TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
+                TD::make('amount', 'Amount')->align(TD::ALIGN_CENTER),
                 TD::make('type_payment_id', 'Type Payment')->render(function ($payment) {
-                    return $payment->typePayment->name;
-                }),
-                TD::make('sale_id', 'Sale ID'),
-                TD::make('created_at', 'Created At'),
-                TD::make('updated_at', 'Updated At'),
+                    return $payment->typePayment->type_payment;
+                })->align(TD::ALIGN_CENTER),
+                TD::make('sale_id', 'Sale ID')->align(TD::ALIGN_CENTER),
+                TD::make('created_at', 'Created At')
+                    ->render(function ($model) {
+                        return $model->created_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('updated_at', 'Updated At')->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                })->align(TD::ALIGN_CENTER),
             ]),
         ];
+    }
+
+    /**
+     * Get the number of models to return per page
+     *
+     * @return int
+     */
+    public static function perPage(): int
+    {
+        return 10;
     }
 }

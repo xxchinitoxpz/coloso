@@ -40,19 +40,19 @@ class TypeCourtResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id'),
+            TD::make('id')->align(TD::ALIGN_CENTER),
 
-            TD::make('type_court'),
+            TD::make('type_court', 'Type court')->align(TD::ALIGN_CENTER),
 
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('updated_at', 'Update date')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
         ];
     }
 

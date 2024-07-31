@@ -70,27 +70,30 @@ class RentalListScreen extends Screen
                 ['name' => 'Rentals', 'route' => route('platform.rental.list')],
             ]]),
             Layout::table('rentals', [
-                TD::make('id', 'ID'),
-                TD::make('total', 'Total'),
-                TD::make('start_time', 'Start Time'),
-                TD::make('end_time', 'End Time'),
+                TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
+                TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
+                TD::make('start_time', 'Start Time')->align(TD::ALIGN_CENTER),
+                TD::make('end_time', 'End Time')->align(TD::ALIGN_CENTER),
                 TD::make('state', 'State')->render(function ($rental) {
                     return $rental->state ? 'Completed' : 'Pending';
-                }),
+                })->align(TD::ALIGN_CENTER),
                 TD::make('customer_id', 'Customer')->render(function ($rental) {
                     return $rental->customer->name;
-                }),
+                })->align(TD::ALIGN_CENTER),
                 TD::make('type_court', 'Type of Court')
                     ->render(function ($rental) {
                         return $rental->court && $rental->court->type_court ? $rental->court->type_court->type_court : 'N/A';
-                    }),
-                TD::make('created_at', 'Created At'),
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('created_at', 'Created At')
+                    ->render(function ($model) {
+                        return $model->created_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
                 TD::make('action', 'Action')->render(function ($rental) {
                     return Button::make('Culminate')
                         ->icon('check')
                         ->method('culminateRental')
                         ->parameters(['rental_id' => $rental->id]);
-                }),
+                })->align(TD::ALIGN_CENTER),
             ]),
         ];
     }

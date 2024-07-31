@@ -66,29 +66,29 @@ class TariffResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id'),
+            TD::make('id')->align(TD::ALIGN_CENTER),
             TD::make('schedule')
                 ->render(function ($tariff) {
                     return $tariff->schedule_label;
-                }),
-            TD::make('price'),
+                })->align(TD::ALIGN_CENTER),
+            TD::make('price')->align(TD::ALIGN_CENTER),
             TD::make('court', 'Court')
                 ->render(function ($tariff) {
                     return $tariff->court ? $tariff->court->court : 'N/A';
-                }),
+                })->align(TD::ALIGN_CENTER),
             TD::make('type_court', 'Type of Court')
                 ->render(function ($tariff) {
                     return $tariff->court && $tariff->court->type_court ? $tariff->court->type_court->type_court : 'N/A';
-                }),
+                })->align(TD::ALIGN_CENTER),
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
-                ->render(function ($model) {
-                    return $model->updated_at->toDateTimeString();
-                }),
+            // TD::make('updated_at', 'Update date')
+            //     ->render(function ($model) {
+            //         return $model->updated_at->toDateTimeString();
+            //     }),
         ];
     }
 

@@ -56,35 +56,35 @@ class CourtResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id'),
+            TD::make('id')->align(TD::ALIGN_CENTER),
 
             TD::make('court', 'Court')
                 ->sort()
                 ->render(function ($court) {
                     return $court->court;
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('type_court', 'Type Court')
                 ->render(function ($court) {
                     return $court->type_court ? $court->type_court->type_court : 'N/A';
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('state', 'State')
                 ->render(function ($court) {
                     return $court->state ? 'Free' : 'Not free';
                 })
-                ->sort(),
+                ->sort()->align(TD::ALIGN_CENTER),
 
 
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('updated_at', 'Update date')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
         ];
     }
 

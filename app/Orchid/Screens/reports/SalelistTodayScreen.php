@@ -62,21 +62,27 @@ class SalelistTodayScreen extends Screen
                 ['name' => 'Sales of the Day'],
             ]]),
             Layout::table('sales', [
-                TD::make('id', 'ID'),
-                TD::make('total', 'Total'),
-                TD::make('balance', 'Balance'),
-                TD::make('final_payment_date', 'Final Payment Date'),
-                TD::make('state', 'State')
+                TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
+                TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
+                TD::make('balance', 'Balance')->align(TD::ALIGN_CENTER),
+                TD::make('final_payment_date', 'Final Payment Date')->align(TD::ALIGN_CENTER),
+                TD::make('state', 'State')->align(TD::ALIGN_CENTER)
                     ->render(function (Sale $sale) {
                         return $sale->state ? 'Pagado' : 'Por Pagar';
                     }),
-                TD::make('customer_id', 'Customer')
+                TD::make('customer_id', 'Customer')->align(TD::ALIGN_CENTER)
                     ->render(function (Sale $sale) {
                         return $sale->customer ? $sale->customer->name : 'Unknown';
                     }),
-                TD::make('created_at', 'Created At'),
-                TD::make('updated_at', 'Updated At'),
-                TD::make('details', 'Details')
+                TD::make('created_at', 'Created At')
+                    ->render(function ($model) {
+                        return $model->created_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('updated_at', 'Updated At')
+                    ->render(function ($model) {
+                        return $model->created_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('details', 'Details')->align(TD::ALIGN_CENTER)
                     ->render(function (Sale $sale) {
                         return Link::make('')
                             ->icon('eye')

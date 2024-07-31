@@ -90,47 +90,47 @@ class ProductResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id'),
+            TD::make('id')->align(TD::ALIGN_CENTER),
 
             TD::make('name', 'Product Name')
                 ->sort()
                 ->render(function ($product) {
                     return $product->name;
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('purchase_price', 'Purchase Price')
                 ->sort()
                 ->render(function ($product) {
                     return number_format($product->purchase_price, 2);
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('sale_price', 'Sale Price')
                 ->sort()
                 ->render(function ($product) {
                     return number_format($product->sale_price, 2);
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('stock', 'Stock')
                 ->sort()
                 ->render(function ($product) {
                     return $product->stock;
-                }),
+                })->align(TD::ALIGN_CENTER),
 
             TD::make('state', 'State')
                 ->render(function ($product) {
                     return $product->state ? 'Active' : 'Inactive';
                 })
-                ->sort(),
+                ->sort()->align(TD::ALIGN_CENTER),
 
             TD::make('created_at', 'Date of creation')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
-                }),
+                })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
-                ->render(function ($model) {
-                    return $model->updated_at->toDateTimeString();
-                }),
+            // TD::make('updated_at', 'Update date')
+            //     ->render(function ($model) {
+            //         return $model->updated_at->toDateTimeString();
+            //     })->align(TD::ALIGN_CENTER),
         ];
     }
 

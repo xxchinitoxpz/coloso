@@ -68,10 +68,16 @@ class PurchaseListScreen extends Screen
                 ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
             ]]),
             Layout::table('purchases', [
-                TD::make('id', 'ID'),
-                TD::make('total', 'Total'),
-                TD::make('created_at', 'Created At'),
-                TD::make('updated_at', 'Updated At'),
+                TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
+                TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
+                TD::make('created_at', 'Created At')
+                ->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                })->align(TD::ALIGN_CENTER),
+                TD::make('updated_at', 'Updated At')
+                ->render(function ($model) {
+                    return $model->created_at->toDateTimeString();
+                })->align(TD::ALIGN_CENTER),
                 TD::make('details', 'Details')
                     ->render(function (Purchases $purchase) {
                         return Link::make('')
