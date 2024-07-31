@@ -21,6 +21,7 @@ use App\Orchid\Screens\RentalEditScreen;
 use App\Orchid\Screens\RentalListScreen;
 use App\Orchid\Screens\reports\SaleDetailTodayScreen;
 use App\Orchid\Screens\reports\SalelistTodayScreen;
+use App\Orchid\Screens\reports\TotalDebtsScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\SaleDetailScreen;
@@ -143,3 +144,5 @@ Route::screen('sales-list-today', SaleListTodayScreen::class)->name('platform.sa
 
 // Route for the sale detail of today
 Route::screen('sale-details-today/{sale}', SaleDetailTodayScreen::class)->name('platform.sale.details.today');
+
+Route::screen('total-debts', TotalDebtsScreen::class)->name('platform.total.debts');
