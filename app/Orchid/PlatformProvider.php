@@ -35,15 +35,15 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
-            // Menu::make('Get Started')
-            //     ->icon('bs.book')
-            //     ->title('Navigation')
-            //     ->route(config('platform.index')),
+            Menu::make('Home')
+                ->icon('bs.book')
+                ->title('Navigation')
+                ->route(config('platform.index')),
 
-            // Menu::make('Sample Screen')
-            //     ->icon('bs.collection')
-            //     ->route('platform.example')
-            //     ->badge(fn () => 6),
+            Menu::make('Sample Screen')
+                ->icon('bs.collection')
+                ->route('platform.example')
+                ->badge(fn () => 6),
 
             // Menu::make('Form Elements')
             //     ->icon('bs.card-list')
@@ -58,9 +58,9 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->icon('bs.columns-gap')
             //     ->route('platform.example.grid'),
 
-            // Menu::make('Charts')
-            //     ->icon('bs.bar-chart')
-            //     ->route('platform.example.charts'),
+            Menu::make('Charts')
+                ->icon('bs.bar-chart')
+                ->route('platform.example.charts'),
 
             // Menu::make('Cards')
             //     ->icon('bs.card-text')
@@ -83,8 +83,11 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('archive')
                 ->title(__('Reports of coloso'))
                 ->list([
-                    Menu::make('Second Level Item 1')->icon('bs.bag')->sort(2),
-                    Menu::make('Second Level Item 2')->icon('bs.heart')->sort(0),
+                    Menu::make('Sales of the day')
+                    ->icon('bs.bag')
+                    ->sort(2)
+                    ->route('platform.sales.list.today'),
+                    Menu::make('Total debts')->icon('bs.calculator')->sort(0),
                 ])
                 ->divider(),
 

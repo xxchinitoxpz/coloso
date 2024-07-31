@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens;
 
+use App\Models\Customer;
+use App\Models\Sale;
+use App\Models\Payment;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
+use Illuminate\Support\Facades\DB;
 
 class PlatformScreen extends Screen
 {
@@ -16,7 +20,28 @@ class PlatformScreen extends Screen
      */
     public function query(): iterable
     {
-        return [];
+        // Get the start and end of today
+        $startOfDay = now()->startOfDay();
+        $endOfDay = now()->endOfDay();
+
+        // Calculate total debts (sales pending to be paid)
+        $salesPending = Sale::where('state', false)
+            ->sum(DB::raw('total - balance')) ?? 0;
+
+        // Calculate the number of customers
+        $customersCount = Customer::count() ?? 0;
+
+        // Calculate actual daily profits (sum of payments made today)
+        $paymentsToday = Payment::whereBetween('created_at', [$startOfDay, $endOfDay])
+            ->sum('amount') ?? 0;
+
+        return [
+            'metrics' => [
+                'salesp'   => ['value' => number_format((float)$salesPending, 2)],
+                'profit'   => ['value' => number_format((float)$paymentsToday, 2)],
+                'customer' => ['value' => number_format((float)$customersCount)],
+            ],
+        ];
     }
 
     /**
@@ -24,16 +49,16 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Get Started';
+        return 'Home';
     }
 
     /**
      * Display header description.
      */
-    public function description(): ?string
-    {
-        return 'Welcome to your Orchid application.';
-    }
+    // public function description(): ?string
+    // {
+    //     return 'Welcome to your application.';
+    // }
 
     /**
      * The screen's action buttons.
@@ -53,8 +78,12 @@ class PlatformScreen extends Screen
     public function layout(): iterable
     {
         return [
-            Layout::view('platform::partials.update-assets'),
-            Layout::view('platform::partials.welcome'),
+            Layout::metrics([
+                'Payments of the days' => 'metrics.profit',
+                'Total debts' => 'metrics.salesp',    
+                'Customers' => 'metrics.customer',
+            ]),
+            Layout::view('welcome_image'), 
         ];
     }
 }

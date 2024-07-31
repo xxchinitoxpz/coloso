@@ -19,6 +19,8 @@ use App\Orchid\Screens\PurchaseEditScreen;
 use App\Orchid\Screens\PurchaseListScreen;
 use App\Orchid\Screens\RentalEditScreen;
 use App\Orchid\Screens\RentalListScreen;
+use App\Orchid\Screens\reports\SaleDetailTodayScreen;
+use App\Orchid\Screens\reports\SalelistTodayScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
 use App\Orchid\Screens\SaleDetailScreen;
@@ -134,3 +136,10 @@ $this->router->post('rental/culminate', [RentalListScreen::class, 'culminateRent
 
 Route::screen('payments', PaymentListScreen::class)->name('platform.payment.list');
 Route::screen('payment/create', PaymentEditScreen::class)->name('platform.payment.create');
+
+
+// Route for the list of sales for today
+Route::screen('sales-list-today', SaleListTodayScreen::class)->name('platform.sales.list.today');
+
+// Route for the sale detail of today
+Route::screen('sale-details-today/{sale}', SaleDetailTodayScreen::class)->name('platform.sale.details.today');

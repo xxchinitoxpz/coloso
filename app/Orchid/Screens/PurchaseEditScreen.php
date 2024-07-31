@@ -165,10 +165,6 @@ class PurchaseEditScreen extends Screen
         return redirect()->route('platform.purchase.list');
     }
 
-
-
-
-
     public function addProduct(Request $request)
     {
         $request->validate([
