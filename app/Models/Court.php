@@ -28,6 +28,11 @@ class Court extends Model
         return $this->hasMany(Rental::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
+
     // Agregar el accessor
     public function getFormattedCourtAttribute()
     {

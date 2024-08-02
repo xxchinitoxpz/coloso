@@ -22,4 +22,8 @@ class Customer extends Model
     {
         return $this->hasMany(Rental::class);
     }
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }

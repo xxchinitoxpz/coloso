@@ -104,15 +104,16 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.sale.list')
                 ->permission('platform.systems.sales'),
 
-            Menu::make(__('Rentals'))
-                ->icon('bs.cookie')
-                ->route('platform.rental.list')
-                ->permission('platform.systems.rentals'),
-
-            Menu::make(__('Payments'))
+            Menu::make(__('Sales payments'))
                 ->icon('bs.credit-card')
                 ->route('platform.payment.list')
                 ->permission('platform.systems.payments')
+                ->divider(),
+
+                Menu::make(__('Rentals and Reservations'))
+                ->icon('bs.cookie')
+                ->route('platform.rental.list')
+                ->permission('platform.systems.rentals')
                 ->divider(),
             // Menu::make('Documentation')
             //     ->title('Docs')
