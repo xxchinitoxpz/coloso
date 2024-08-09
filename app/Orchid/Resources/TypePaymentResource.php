@@ -28,8 +28,8 @@ class TypePaymentResource extends Resource
     {
         return [
             Input::make('type_payment')
-                ->title('Type Payment')
-                ->placeholder('Enter type payment here')
+                ->title('Tipo de pago')
+                ->placeholder('Ingresa el tipo de pago aqui')
                 ->required(),
         ];
     }
@@ -42,16 +42,16 @@ class TypePaymentResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id')->align(TD::ALIGN_CENTER),
+            TD::make('id','ID')->align(TD::ALIGN_CENTER),
 
-            TD::make('type_payment', 'Type payment')->align(TD::ALIGN_CENTER),
+            TD::make('type_payment', 'Tipo de pago')->align(TD::ALIGN_CENTER),
 
-            TD::make('created_at', 'Date of creation')
+            TD::make('created_at', 'Fecha de creación')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
+            TD::make('updated_at', 'Fecha de ultima modificación')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
@@ -66,8 +66,8 @@ class TypePaymentResource extends Resource
     public function legend(): array
     {
         return [
-            Sight::make('id'),
-            Sight::make('type_payment'),
+            Sight::make('id','ID'),
+            Sight::make('type_payment','Tipo de pago'),
         ];
     }
 
@@ -80,6 +80,7 @@ class TypePaymentResource extends Resource
     {
         return [];
     }
+
 
     /**
      * Get the permission key for the resource.
@@ -104,5 +105,14 @@ class TypePaymentResource extends Resource
     public static function icon(): string
     {
         return 'wallet'; // El ícono deseado
+    }
+    public static function label(): string
+    {
+        return __('Tipos de pagos');
+    }
+
+    public static function createButtonLabel(): string
+    {
+        return __('Crear tipo pago');
     }
 }

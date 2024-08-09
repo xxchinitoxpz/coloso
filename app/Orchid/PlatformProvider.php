@@ -35,9 +35,9 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
-            Menu::make(__('Home'))
+            Menu::make(__('Inicio'))
                 ->icon('bs.book')
-                ->title('Navigation')
+                ->title('Navegación')
                 ->route(config('platform.index')),
 
             // Menu::make('Sample Screen')
@@ -71,7 +71,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.people')
                 ->route('platform.systems.users')
                 ->permission('platform.systems.users')
-                ->title(__('Access Controls')),
+                ->title(__('Control de acceso')),
 
             Menu::make(__('Roles'))
                 ->icon('bs.shield')
@@ -79,9 +79,9 @@ class PlatformProvider extends OrchidServiceProvider
                 ->permission('platform.systems.roles')
                 ->divider(),
 
-            Menu::make(__('Reports'))
+            Menu::make(__('Reportes'))
                 ->icon('archive')
-                ->title(__('Reports of coloso'))
+                ->title(__('Reportes de coloso'))
                 ->list([
                     Menu::make('Sales of the day')
                     ->icon('bs.bag')
@@ -94,23 +94,23 @@ class PlatformProvider extends OrchidServiceProvider
                 ])
                 ->divider(),
 
-            Menu::make(__('Purchases'))
+            Menu::make(__('Compras'))
                 ->icon('bs.basket')
                 ->route('platform.purchase.list')
                 ->permission('platform.systems.purchases')
-                ->title(__('Processes of coloso')),
-            Menu::make(__('Sales'))
+                ->title(__('Procesos de coloso')),
+            Menu::make(__('Ventas'))
                 ->icon('bs.cart-plus')
                 ->route('platform.sale.list')
                 ->permission('platform.systems.sales'),
 
-            Menu::make(__('Sales payments'))
+            Menu::make(__('Pago de ventas'))
                 ->icon('bs.credit-card')
                 ->route('platform.payment.list')
                 ->permission('platform.systems.payments')
                 ->divider(),
 
-                Menu::make(__('Rentals and Reservations'))
+                Menu::make(__('Rentas y reservaciones de canchas'))
                 ->icon('bs.cookie')
                 ->route('platform.rental.list')
                 ->permission('platform.systems.rentals')
