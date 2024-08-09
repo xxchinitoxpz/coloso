@@ -26,16 +26,16 @@ class CustomersResource extends Resource
     {
         return [
             Input::make('name')
-                ->title('Name')
-                ->placeholder('Enter name here')
+                ->title('Nombre')
+                ->placeholder('Ingresa el nombre aqui')
                 ->required(),
             Input::make('dni')
                 ->title('DNI')
-                ->placeholder('Enter dni here')
+                ->placeholder('Ingresa el dni aqui')
                 ->required(),
             Input::make('phone')
-                ->title('Phone')
-                ->placeholder('Enter phone here')
+                ->title('Telefono')
+                ->placeholder('Ingresa el telefono aqui')
                 ->required(),
         ];
     }
@@ -48,15 +48,15 @@ class CustomersResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id')->align(TD::ALIGN_CENTER),
+            TD::make('id','ID')->align(TD::ALIGN_CENTER),
 
-            TD::make('name')->align(TD::ALIGN_CENTER),
+            TD::make('name','Nombre')->align(TD::ALIGN_CENTER),
 
-            TD::make('dni')->align(TD::ALIGN_CENTER),
+            TD::make('dni','DNI')->align(TD::ALIGN_CENTER),
 
-            TD::make('phone')->align(TD::ALIGN_CENTER),
+            TD::make('phone','Telefono')->align(TD::ALIGN_CENTER),
 
-            TD::make('created_at', 'Date of creation')
+            TD::make('created_at', 'Fecha de creación')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
@@ -76,10 +76,10 @@ class CustomersResource extends Resource
     public function legend(): array
     {
         return [
-            Sight::make('id'),
-            Sight::make('name'),
-            Sight::make('dni'),
-            Sight::make('phone'),
+            Sight::make('id','ID'),
+            Sight::make('name','Nombre'),
+            Sight::make('dni','DNI'),
+            Sight::make('phone','Telefono'),
         ];
     }
 
@@ -117,4 +117,15 @@ class CustomersResource extends Resource
     {
         return 'people'; // El ícono deseado
     }
+    
+    public static function label(): string
+    {
+        return __('Clientes');
+    }
+
+    public static function createButtonLabel(): string
+    {
+        return __('Crear cliente');
+    }
+
 }

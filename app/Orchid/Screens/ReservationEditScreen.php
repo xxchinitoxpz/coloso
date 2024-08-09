@@ -30,13 +30,13 @@ class ReservationEditScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Create/Edit Reservation';
+        return 'Crear/Editar Reserva';
     }
 
     public function commandBar(): iterable
     {
         return [
-            Button::make('Save')
+            Button::make('Guardar')
                 ->icon('check')
                 ->method('save'),
         ];
@@ -47,37 +47,37 @@ class ReservationEditScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Rentals and Reservation', 'route' => route('platform.rental.list')],
-                ['name' => $this->reservation->exists ? 'Edit Reservation' : 'Create Reservation'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Alquileres y Reservas', 'route' => route('platform.rental.list')],
+                ['name' => $this->reservation->exists ? 'Editar Reserva' : 'Crear Reserva'],
             ]]),
             Layout::rows([
                 Relation::make('reservation.customer_id')
-                    ->title('Customer')
+                    ->title('Cliente')
                     ->fromModel(Customer::class, 'name')
                     ->required(),
                 Select::make('reservation.court_id')
-                    ->title('Court')
+                    ->title('Cancha')
                     ->options(
                         Court::with('type_court')->get()->mapWithKeys(function ($court) {
                             return [$court->id => $court->formatted_court];
                         })->toArray()
                     )
-                    ->empty('Select court')
+                    ->empty('Seleccionar cancha')
                     ->required(),
                 Input::make('reservation.start_time')
-                    ->title('Start Time')
+                    ->title('Hora de Inicio')
                     ->type('time')
                     ->required(),
                 Input::make('reservation.total_hours')
-                    ->title('Total Hours')
+                    ->title('Horas Totales')
                     ->type('number')
                     ->required(),
                 Input::make('reservation.end_time')
-                    ->title('End Time')
+                    ->title('Hora de Fin')
                     ->type('time')
                     ->readonly()
-                    ->help('End time will be calculated automatically.'),
+                    ->help('La hora de fin se calculará automáticamente.'),
             ]),
         ];
     }
@@ -93,7 +93,7 @@ class ReservationEditScreen extends Screen
 
         DB::beginTransaction();
         try {
-            // Save the reservation
+            // Guardar la reserva
             $reservation->fill([
                 'total' => $this->calculateTotal($courtId, $startTime, $totalHours),
                 'state' => false,
@@ -105,7 +105,7 @@ class ReservationEditScreen extends Screen
                 'court_id' => $courtId,
             ])->save();
 
-            // Update the court state
+            // Actualizar el estado de la cancha
             $court = Court::find($courtId);
             if ($court) {
                 $court->state = false;
@@ -114,10 +114,10 @@ class ReservationEditScreen extends Screen
 
             DB::commit();
 
-            Alert::info('You have successfully created/updated a reservation.');
+            Alert::info('Has creado/actualizado una reserva exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while saving the reservation: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al guardar la reserva: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.rental.list');
@@ -125,11 +125,11 @@ class ReservationEditScreen extends Screen
 
     private function calculateTotal($courtId, $startTime, $totalHours)
     {
-        // Convert start time to hours
+        // Convertir la hora de inicio a horas
         $startHour = (int) date('H', strtotime($startTime));
         $endHour = ($startHour + $totalHours) % 24;
 
-        // Get the court's tariff
+        // Obtener la tarifa de la cancha
         $tariffs = Tariff::where('court_id', $courtId)->get();
 
         $total = 0;
@@ -138,17 +138,17 @@ class ReservationEditScreen extends Screen
         while ($totalHours > 0) {
             $tariff = $this->getTariffForHour($tariffs, $currentHour);
 
-            // Determine the next transition time based on current hour
+            // Determinar la próxima hora de transición basada en la hora actual
             $nextTransitionHour = $this->getNextTransitionHour($currentHour);
 
-            // Calculate hours in the current tariff period
+            // Calcular horas en el período tarifario actual
             $hoursInPeriod = min($totalHours, $nextTransitionHour - $currentHour);
             $total += $hoursInPeriod * $tariff->price;
 
             $totalHours -= $hoursInPeriod;
             $currentHour = $nextTransitionHour;
 
-            // If we are past midnight, reset current hour
+            // Si pasamos de medianoche, restablecer la hora actual
             if ($currentHour >= 24) {
                 $currentHour = 0;
             }
@@ -171,11 +171,11 @@ class ReservationEditScreen extends Screen
     private function getNextTransitionHour($currentHour)
     {
         if ($currentHour >= 6 && $currentHour < 12) {
-            return 12; // Transition to afternoon
+            return 12; // Transición a la tarde
         } elseif ($currentHour >= 12 && $currentHour < 18) {
-            return 18; // Transition to evening
+            return 18; // Transición a la noche
         } else {
-            return 24; // Transition to next day
+            return 24; // Transición al siguiente día
         }
     }
 }

@@ -10,8 +10,9 @@ use Orchid\Support\Facades\Layout;
 class PurchaseDetailScreen extends Screen
 {
     public $purchase;
+
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -23,13 +24,13 @@ class PurchaseDetailScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Purchase Details';
+        return 'Detalles de Compra';
     }
 
     public function permission(): ?iterable
@@ -40,7 +41,7 @@ class PurchaseDetailScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
@@ -50,7 +51,7 @@ class PurchaseDetailScreen extends Screen
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -58,16 +59,16 @@ class PurchaseDetailScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
-                ['name' => 'Purchase Details'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Compras', 'route' => route('platform.purchase.list')],
+                ['name' => 'Detalles de Compra'],
             ]]),
             Layout::table('purchase.products', [ // Usar 'purchase.products' para acceder a la relación
-                TD::make('name', 'Product Name')
+                TD::make('name', 'Nombre del Producto')
                     ->render(function ($product) {
                         return $product->name;
                     }),
-                TD::make('pivot.quantity', 'Quantity'),
+                TD::make('pivot.quantity', 'Cantidad'),
                 TD::make('pivot.subtotal', 'Subtotal'),
             ]),
         ];

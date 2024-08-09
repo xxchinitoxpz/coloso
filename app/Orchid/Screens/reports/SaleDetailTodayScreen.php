@@ -10,7 +10,7 @@ use Orchid\Support\Facades\Layout;
 class SaleDetailTodayScreen extends Screen
 {
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -22,17 +22,17 @@ class SaleDetailTodayScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Sale Detail';
+        return 'Detalle de Venta';
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
@@ -42,7 +42,7 @@ class SaleDetailTodayScreen extends Screen
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -50,16 +50,16 @@ class SaleDetailTodayScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Sales of the Day', 'route' => route('platform.sales.list.today')],
-                ['name' => 'Sale Detail'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Ventas del Día', 'route' => route('platform.sales.list.today')],
+                ['name' => 'Detalle de Venta'],
             ]]),
             Layout::table('sale.products', [
-                TD::make('name', 'Product Name')
+                TD::make('name', 'Nombre del Producto')
                     ->render(function ($product) {
                         return $product->name;
                     }),
-                TD::make('pivot.quantity', 'Quantity'),
+                TD::make('pivot.quantity', 'Cantidad'),
                 TD::make('pivot.subtotal', 'Subtotal'),
             ]),
         ];

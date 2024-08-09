@@ -11,14 +11,14 @@ use Orchid\Screen\TD;
 class CategoriesResource extends Resource
 {
     /**
-     * The model the resource corresponds to.
+     * El modelo al que corresponde el recurso.
      *
      * @var string
      */
     public static $model = Categories::class;
 
     /**
-     * Get the fields displayed by the resource.
+     * Obtén los campos que se mostrarán en el recurso.
      *
      * @return array
      */
@@ -26,13 +26,13 @@ class CategoriesResource extends Resource
     {
         return [
             Input::make('categorie')
-                ->title('Categorie')
-                ->placeholder('Enter categorie here'),
+                ->title('Categoría')
+                ->placeholder('Ingresa la categoría aquí'),
         ];
     }
 
     /**
-     * Get the columns displayed by the resource.
+     * Obtén las columnas que se mostrarán en el recurso.
      *
      * @return TD[]
      */
@@ -41,14 +41,14 @@ class CategoriesResource extends Resource
         return [
             TD::make('id')->align(TD::ALIGN_CENTER),
 
-            TD::make('categorie')->align(TD::ALIGN_CENTER),
+            TD::make('categorie', 'Categoría')->align(TD::ALIGN_CENTER),
 
-            TD::make('created_at', 'Date of creation')
+            TD::make('created_at', 'Fecha de creación')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
+            TD::make('updated_at', 'Fecha de actualización')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
@@ -56,7 +56,7 @@ class CategoriesResource extends Resource
     }
 
     /**
-     * Get the sights displayed by the resource.
+     * Obtén los detalles que se mostrarán en el recurso.
      *
      * @return Sight[]
      */
@@ -64,12 +64,12 @@ class CategoriesResource extends Resource
     {
         return [
             Sight::make('id'),
-            Sight::make('categorie'),
+            Sight::make('categorie', 'Categoría'),
         ];
     }
 
     /**
-     * Get the filters available for the resource.
+     * Obtén los filtros disponibles para el recurso.
      *
      * @return array
      */
@@ -79,7 +79,7 @@ class CategoriesResource extends Resource
     }
 
     /**
-     * Get the permission key for the resource.
+     * Obtén la clave de permiso para el recurso.
      *
      * @return string|null
      */
@@ -89,12 +89,22 @@ class CategoriesResource extends Resource
     }
 
     /**
-     * Get the number of models to return per page
+     * Obtén el número de modelos a devolver por página.
      *
      * @return int
      */
     public static function perPage(): int
     {
         return 10;
+    }
+
+    public static function label(): string
+    {
+        return __('Categorias - Producto');
+    }
+
+    public static function createButtonLabel(): string
+    {
+        return __('Crear categoria');
     }
 }

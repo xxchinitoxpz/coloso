@@ -28,7 +28,7 @@ class PaymentEditScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Create/Edit Payment';
+        return 'Crear/Editar Pago';
     }
 
     public function permission(): ?iterable
@@ -41,7 +41,7 @@ class PaymentEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Save')
+            Button::make('Guardar')
                 ->icon('check')
                 ->method('save'),
         ];
@@ -52,21 +52,21 @@ class PaymentEditScreen extends Screen
         return [
             Layout::rows([
                 Input::make('payment.amount')
-                    ->title('Amount')
+                    ->title('Monto')
                     ->type('number')
                     ->step('0.01') // Permitir decimales
                     ->required(),
                 Select::make('payment.type_payment_id')
-                    ->title('Type Payment')
+                    ->title('Tipo de Pago')
                     ->options(TypePayment::pluck('type_payment', 'id')->toArray())
-                    ->empty('Select Type Payment')
+                    ->empty('Seleccionar Tipo de Pago')
                     ->required(),
                 Select::make('payment.sale_id')
-                    ->title('Sale')
+                    ->title('Venta')
                     ->options(Sale::where('state', false)->with('customer')->get()->mapWithKeys(function ($sale) {
-                        return [$sale->id => $sale->customer->name . ' | Debt: ' . ($sale->total - $sale->balance)];
+                        return [$sale->id => $sale->customer->name . ' | Deuda: ' . ($sale->total - $sale->balance)];
                     })->toArray())
-                    ->empty('Select Sale')
+                    ->empty('Seleccionar Venta')
                     ->required(),
             ]),
         ];
@@ -94,10 +94,10 @@ class PaymentEditScreen extends Screen
             $sale->save();
 
             DB::commit();
-            Alert::info('You have successfully created/updated a payment.');
+            Alert::info('Has creado/actualizado el pago exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while saving the payment: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al guardar el pago: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.payment.list');

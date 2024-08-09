@@ -26,8 +26,8 @@ class TypeCourtResource extends Resource
     {
         return [
             Input::make('type_court')
-                ->title('Type Court')
-                ->placeholder('Enter type court here')
+                ->title('Tipo de cancha')
+                ->placeholder('Ingresa el tipo de cancha aqui')
                 ->required(),
         ];
     }
@@ -40,16 +40,16 @@ class TypeCourtResource extends Resource
     public function columns(): array
     {
         return [
-            TD::make('id')->align(TD::ALIGN_CENTER),
+            TD::make('id','ID')->align(TD::ALIGN_CENTER),
 
-            TD::make('type_court', 'Type court')->align(TD::ALIGN_CENTER),
+            TD::make('type_court', 'Tipo de cancha')->align(TD::ALIGN_CENTER),
 
-            TD::make('created_at', 'Date of creation')
+            TD::make('created_at', 'Fecha de creación')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
+            TD::make('updated_at', 'Fecha de ultima modificación')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
@@ -64,8 +64,8 @@ class TypeCourtResource extends Resource
     public function legend(): array
     {
         return [
-            Sight::make('id'),
-            Sight::make('type_court'),
+            Sight::make('id','ID'),
+            Sight::make('type_court','Tipo de cancha'),
         ];
     }
 
@@ -102,5 +102,15 @@ class TypeCourtResource extends Resource
     public static function icon(): string
     {
         return 'bricks'; // El ícono deseado
+    }
+
+    public static function label(): string
+    {
+        return __('Tipos de canchas');
+    }
+
+    public static function createButtonLabel(): string
+    {
+        return __('Crear tipo cancha');
     }
 }

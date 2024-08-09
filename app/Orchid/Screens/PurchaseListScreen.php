@@ -12,7 +12,7 @@ use Orchid\Screen\TD;
 class PurchaseListScreen extends Screen
 {
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -24,13 +24,13 @@ class PurchaseListScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'PurchaseListScreen';
+        return 'Lista de Compras';
     }
 
     public function permission(): ?iterable
@@ -41,22 +41,21 @@ class PurchaseListScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create Purchase')
+            Link::make('Crear Compra')
                 ->icon('plus')
                 ->route('platform.purchase.create'),
-                
         ];
     }
-    
+
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -64,21 +63,21 @@ class PurchaseListScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Compras', 'route' => route('platform.purchase.list')],
             ]]),
             Layout::table('purchases', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
                 TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
-                TD::make('created_at', 'Created At')
-                ->render(function ($model) {
-                    return $model->created_at->toDateTimeString();
-                })->align(TD::ALIGN_CENTER),
-                TD::make('updated_at', 'Updated At')
-                ->render(function ($model) {
-                    return $model->created_at->toDateTimeString();
-                })->align(TD::ALIGN_CENTER),
-                TD::make('details', 'Details')
+                TD::make('created_at', 'Creado En')
+                    ->render(function ($model) {
+                        return $model->created_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('updated_at', 'Actualizado En')
+                    ->render(function ($model) {
+                        return $model->updated_at->toDateTimeString();
+                    })->align(TD::ALIGN_CENTER),
+                TD::make('details', 'Detalles')
                     ->render(function (Purchases $purchase) {
                         return Link::make('')
                             ->icon('eye')
@@ -87,6 +86,4 @@ class PurchaseListScreen extends Screen
             ]),
         ];
     }
-      
-    
 }

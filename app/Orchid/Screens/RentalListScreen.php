@@ -25,7 +25,7 @@ class RentalListScreen extends Screen
 
     public function name(): ?string
     {
-        return 'Rentals and Reservations';
+        return 'Alquileres y Reservas';
     }
 
     public function permission(): ?iterable
@@ -38,10 +38,10 @@ class RentalListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create Rental')
+            Link::make('Crear Alquiler')
                 ->icon('plus')
                 ->route('platform.rental.create'),
-            Link::make('Create Reservation')
+            Link::make('Crear Reserva')
                 ->icon('plus')
                 ->route('platform.reservation.create'),
         ];
@@ -51,67 +51,67 @@ class RentalListScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Rentals and Reservations', 'route' => route('platform.rental.list')],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Alquileres y Reservas', 'route' => route('platform.rental.list')],
             ]]),
             Layout::table('rentals', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
                 TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
-                TD::make('start_time', 'Start Time')->align(TD::ALIGN_CENTER),
-                TD::make('end_time', 'End Time')->align(TD::ALIGN_CENTER),
-                TD::make('state', 'State')->render(function ($rental) {
-                    return $rental->state ? 'Completed' : 'Pending';
+                TD::make('start_time', 'Hora de Inicio')->align(TD::ALIGN_CENTER),
+                TD::make('end_time', 'Hora de Fin')->align(TD::ALIGN_CENTER),
+                TD::make('state', 'Estado')->render(function ($rental) {
+                    return $rental->state ? 'Completado' : 'Pendiente';
                 })->align(TD::ALIGN_CENTER),
-                TD::make('customer_id', 'Customer')->render(function ($rental) {
+                TD::make('customer_id', 'Cliente')->render(function ($rental) {
                     return $rental->customer->name;
                 })->align(TD::ALIGN_CENTER),
-                TD::make('type_court', 'Type of Court')
+                TD::make('type_court', 'Tipo de Cancha')
                     ->render(function ($rental) {
                         return $rental->court && $rental->court->type_court ? $rental->court->type_court->type_court : 'N/A';
                     })->align(TD::ALIGN_CENTER),
-                TD::make('created_at', 'Created At')
+                TD::make('created_at', 'Fecha de Creación')
                     ->render(function ($model) {
                         return $model->created_at->toDateTimeString();
                     })->align(TD::ALIGN_CENTER),
-                TD::make('action', 'Action')->render(function ($rental) {
-                    return Button::make('Culminate')
+                TD::make('action', 'Acción')->render(function ($rental) {
+                    return Button::make('Culminar')
                         ->icon('check')
                         ->method('culminateRental')
                         ->parameters(['rental_id' => $rental->id]);
                 })->align(TD::ALIGN_CENTER),
-            ])->title('Rentals'),
+            ])->title('Alquileres'),
 
             Layout::table('reservations', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
                 TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
-                TD::make('start_time', 'Start Time')->align(TD::ALIGN_CENTER),
-                TD::make('end_time', 'End Time')->align(TD::ALIGN_CENTER),
-                TD::make('state', 'State')->render(function ($reservation) {
-                    return $reservation->state ? 'Completed' : 'Pending';
+                TD::make('start_time', 'Hora de Inicio')->align(TD::ALIGN_CENTER),
+                TD::make('end_time', 'Hora de Fin')->align(TD::ALIGN_CENTER),
+                TD::make('state', 'Estado')->render(function ($reservation) {
+                    return $reservation->state ? 'Completado' : 'Pendiente';
                 })->align(TD::ALIGN_CENTER),
-                TD::make('customer_id', 'Customer')->render(function ($reservation) {
+                TD::make('customer_id', 'Cliente')->render(function ($reservation) {
                     return $reservation->customer->name;
                 })->align(TD::ALIGN_CENTER),
-                TD::make('type_court', 'Type of Court')
+                TD::make('type_court', 'Tipo de Cancha')
                     ->render(function ($reservation) {
                         return $reservation->court && $reservation->court->type_court ? $reservation->court->type_court->type_court : 'N/A';
                     })->align(TD::ALIGN_CENTER),
-                TD::make('created_at', 'Created At')
+                TD::make('created_at', 'Fecha de Creación')
                     ->render(function ($model) {
                         return $model->created_at->toDateTimeString();
                     })->align(TD::ALIGN_CENTER),
-                TD::make('action', 'Action')->render(function ($reservation) {
+                TD::make('action', 'Acción')->render(function ($reservation) {
                     return
-                        Button::make('Edit')
+                        Button::make('Editar')
                         ->icon('pencil')
                         ->method('editReservation')
                         ->parameters(['reservation_id' => $reservation->id]) .
-                        Button::make('Culminate')
+                        Button::make('Culminar')
                         ->icon('check')
                         ->method('culminateReservation')
                         ->parameters(['reservation_id' => $reservation->id]);
                 })->align(TD::ALIGN_CENTER),
-            ])->title('Reservations'),
+            ])->title('Reservas'),
         ];
     }
 
@@ -135,10 +135,10 @@ class RentalListScreen extends Screen
 
             DB::commit();
 
-            Alert::info('Rental and court state have been updated successfully.');
+            Alert::info('El estado del alquiler y de la cancha se ha actualizado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while updating the rental and court: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al actualizar el alquiler y la cancha: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.rental.list');
@@ -164,10 +164,10 @@ class RentalListScreen extends Screen
 
             DB::commit();
 
-            Alert::info('Reservation and court state have been updated successfully.');
+            Alert::info('El estado de la reserva y de la cancha se ha actualizado correctamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while updating the reservation and court: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al actualizar la reserva y la cancha: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.rental.list');

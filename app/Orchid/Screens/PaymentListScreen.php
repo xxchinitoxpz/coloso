@@ -11,7 +11,7 @@ use Orchid\Support\Facades\Layout;
 class PaymentListScreen extends Screen
 {
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos que se mostrarán en la pantalla.
      *
      * @return array
      */
@@ -23,13 +23,13 @@ class PaymentListScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla que se muestra en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Payments';
+        return 'Pagos';
     }
 
     public function permission(): ?iterable
@@ -40,21 +40,21 @@ class PaymentListScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create Payment')
+            Link::make('Crear Pago')
                 ->icon('plus')
                 ->route('platform.payment.create'),
         ];
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -63,24 +63,24 @@ class PaymentListScreen extends Screen
         return [
             Layout::table('payments', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
-                TD::make('amount', 'Amount')->align(TD::ALIGN_CENTER),
-                TD::make('type_payment_id', 'Type Payment')->render(function ($payment) {
+                TD::make('amount', 'Monto')->align(TD::ALIGN_CENTER),
+                TD::make('type_payment_id', 'Tipo de Pago')->render(function ($payment) {
                     return $payment->typePayment->type_payment;
                 })->align(TD::ALIGN_CENTER),
-                TD::make('sale_id', 'Sale ID')->align(TD::ALIGN_CENTER),
-                TD::make('created_at', 'Created At')
+                TD::make('sale_id', 'ID de Venta')->align(TD::ALIGN_CENTER),
+                TD::make('created_at', 'Creado En')
                     ->render(function ($model) {
                         return $model->created_at->toDateTimeString();
                     })->align(TD::ALIGN_CENTER),
-                TD::make('updated_at', 'Updated At')->render(function ($model) {
-                    return $model->created_at->toDateTimeString();
+                TD::make('updated_at', 'Actualizado En')->render(function ($model) {
+                    return $model->updated_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
             ]),
         ];
     }
 
     /**
-     * Get the number of models to return per page
+     * Obtener el número de modelos a devolver por página
      *
      * @return int
      */

@@ -10,8 +10,9 @@ use Orchid\Support\Facades\Layout;
 class SaleDetailScreen extends Screen
 {
     public $sale;
+
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -23,17 +24,17 @@ class SaleDetailScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'SaleDetailScreen';
+        return 'Detalles de la Venta';
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
@@ -41,6 +42,7 @@ class SaleDetailScreen extends Screen
     {
         return [];
     }
+
     public function permission(): ?iterable
     {
         return [
@@ -49,7 +51,7 @@ class SaleDetailScreen extends Screen
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -57,22 +59,17 @@ class SaleDetailScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Sales', 'route' => route('platform.sale.list')],
-                ['name' => 'Sale Details'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Ventas', 'route' => route('platform.sale.list')],
+                ['name' => 'Detalles de la Venta'],
             ]]),
 
-            // TD::make('sale.customer_id', 'Customer Name')
-            // ->render(function ($sale) {
-            //     return $sale->customer->name;
-            // }),
-
             Layout::table('sale.products', [
-                TD::make('name', 'Product Name')
+                TD::make('name', 'Nombre del Producto')
                     ->render(function ($product) {
                         return $product->name;
                     }),
-                TD::make('pivot.quantity', 'Quantity'),
+                TD::make('pivot.quantity', 'Cantidad'),
                 TD::make('pivot.subtotal', 'Subtotal'),
             ]),
         ];

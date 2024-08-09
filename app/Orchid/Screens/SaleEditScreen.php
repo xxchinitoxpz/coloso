@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Auth;
 class SaleEditScreen extends Screen
 {
     public $sale;
+
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -31,13 +32,13 @@ class SaleEditScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Create/Edit Sale';
+        return 'Crear/Editar Venta';
     }
 
     public function permission(): ?iterable
@@ -48,25 +49,24 @@ class SaleEditScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): iterable
     {
         return [
-            Button::make('Save')
+            Button::make('Guardar')
                 ->icon('check')
                 ->method('save'),
         ];
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
-
     public function layout(): array
     {
         $products = old('products', [null]);
@@ -77,12 +77,12 @@ class SaleEditScreen extends Screen
         foreach ($products as $index => $product) {
             $productFields[] = Layout::rows([
                 Relation::make("products[$index]")
-                    ->title('Product')
+                    ->title('Producto')
                     ->fromModel(Products::class, 'name', 'id')
                     ->displayAppend('priceDisplay')
                     ->required(),
                 Input::make("quantities[$index]")
-                    ->title('Quantity')
+                    ->title('Cantidad')
                     ->type('number')
                     ->required()
                     ->step(1)
@@ -92,20 +92,20 @@ class SaleEditScreen extends Screen
 
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Sales', 'route' => route('platform.sale.list')],
-                ['name' => $this->sale->exists ? 'Edit Sale' : 'Create Sale'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Ventas', 'route' => route('platform.sale.list')],
+                ['name' => $this->sale->exists ? 'Editar Venta' : 'Crear Venta'],
             ]]),
             Layout::rows([
                 Relation::make('customer_id')
-                    ->title('Customer')
+                    ->title('Cliente')
                     ->fromModel(Customer::class, 'name')
                     ->required()
                     ->value($customerId),
             ]),
             ...$productFields,
             Layout::rows([
-                Button::make('Add Another Product')
+                Button::make('Añadir Otro Producto')
                     ->icon('plus')
                     ->method('addProduct'),
             ])
@@ -157,10 +157,10 @@ class SaleEditScreen extends Screen
 
             DB::commit();
 
-            Alert::info('You have successfully created/updated a sale.');
+            Alert::info('Has creado/actualizado la venta con éxito.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while saving the sale: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al guardar la venta: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.sale.list');

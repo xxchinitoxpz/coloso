@@ -11,7 +11,7 @@ use Orchid\Support\Facades\Layout;
 class SaleListScreen extends Screen
 {
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -23,13 +23,13 @@ class SaleListScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'SaleListScreen';
+        return 'Lista de Ventas';
     }
 
     public function permission(): ?iterable
@@ -40,22 +40,21 @@ class SaleListScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): iterable
     {
         return [
-            Link::make('Create Sale')
+            Link::make('Crear Venta')
                 ->icon('plus')
                 ->route('platform.sale.create'),
-
         ];
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -63,28 +62,28 @@ class SaleListScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Sales', 'route' => route('platform.sale.list')],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Ventas', 'route' => route('platform.sale.list')],
             ]]),
             Layout::table('sales', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
                 TD::make('total', 'Total')->align(TD::ALIGN_CENTER),
                 TD::make('balance', 'Balance')->align(TD::ALIGN_CENTER),
-                TD::make('final_payment_date', 'Final Payment Date')->align(TD::ALIGN_CENTER),
-                TD::make('state', 'State')
+                TD::make('final_payment_date', 'Fecha de Pago Final')->align(TD::ALIGN_CENTER),
+                TD::make('state', 'Estado')
                     ->render(function (Sale $sale) {
                         return $sale->state ? 'Pagado' : 'Por Pagar';
                     })->align(TD::ALIGN_CENTER),
-                TD::make('customer_id', 'Customer')
+                TD::make('customer_id', 'Cliente')
                     ->render(function (Sale $sale) {
-                        return $sale->customer ? $sale->customer->name : 'Unknown';
+                        return $sale->customer ? $sale->customer->name : 'Desconocido';
                     })->align(TD::ALIGN_CENTER),
-                TD::make('created_at', 'Created At')
+                TD::make('created_at', 'Fecha de Creación')
                     ->render(function ($model) {
                         return $model->created_at->toDateTimeString();
                     })->align(TD::ALIGN_CENTER),
-                // TD::make('updated_at', 'Updated At'),
-                TD::make('details', 'Details')
+                // TD::make('updated_at', 'Actualizado En'),
+                TD::make('details', 'Detalles')
                     ->render(function (Sale $sale) {
                         return Link::make('')
                             ->icon('eye')

@@ -79,9 +79,9 @@ class PlatformScreen extends Screen
     {
         return [
             Layout::metrics([
-                'Payments of the days' => 'metrics.profit',
-                'Total debts' => 'metrics.salesp',    
-                'Customers' => 'metrics.customer',
+                'Pagos del día' => 'metrics.profit',
+                'Deudas totales' => 'metrics.salesp',    
+                'Clientes' => 'metrics.customer',
             ]),
             Layout::view('welcome_image'), 
         ];

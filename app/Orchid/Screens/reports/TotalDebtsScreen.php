@@ -10,18 +10,18 @@ use Orchid\Support\Facades\Layout;
 class TotalDebtsScreen extends Screen
 {
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
     public function query(): iterable
     {
-        // Fetch customers with their total debts
+        // Obtener clientes con sus deudas totales
         $customers = Customer::with(['sales' => function ($query) {
             $query->where('state', false);
         }])->get();
 
-        // Calculate total debt for each customer
+        // Calcular la deuda total para cada cliente
         $customers->each(function ($customer) {
             $customer->total_debt = $customer->sales->sum(function ($sale) {
                 return $sale->total - $sale->balance;
@@ -36,17 +36,17 @@ class TotalDebtsScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Total Debts';
+        return 'Deudas Totales';
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
@@ -56,7 +56,7 @@ class TotalDebtsScreen extends Screen
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -64,13 +64,13 @@ class TotalDebtsScreen extends Screen
     {
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Total Debts'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Deudas Totales'],
             ]]),
             Layout::table('customers', [
                 TD::make('id', 'ID')->align(TD::ALIGN_CENTER),
-                TD::make('name', 'Name')->align(TD::ALIGN_CENTER),
-                TD::make('total_debt', 'Total Debt')->align(TD::ALIGN_CENTER)
+                TD::make('name', 'Nombre')->align(TD::ALIGN_CENTER),
+                TD::make('total_debt', 'Deuda Total')->align(TD::ALIGN_CENTER)
                     ->render(function ($customer) {
                         return number_format($customer->total_debt, 2);
                     }),

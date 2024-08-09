@@ -22,7 +22,7 @@ class PurchaseEditScreen extends Screen
     public $purchase;
 
     /**
-     * Fetch data to be displayed on the screen.
+     * Obtener los datos a mostrar en la pantalla.
      *
      * @return array
      */
@@ -34,13 +34,13 @@ class PurchaseEditScreen extends Screen
     }
 
     /**
-     * The name of the screen displayed in the header.
+     * El nombre de la pantalla mostrado en el encabezado.
      *
      * @return string|null
      */
     public function name(): ?string
     {
-        return 'Create/Edit Purchase';
+        return 'Crear/Editar Compra';
     }
 
     public function permission(): ?iterable
@@ -51,25 +51,24 @@ class PurchaseEditScreen extends Screen
     }
 
     /**
-     * The screen's action buttons.
+     * Los botones de acción de la pantalla.
      *
      * @return \Orchid\Screen\Action[]
      */
     public function commandBar(): iterable
     {
         return [
-            Button::make('Save')
+            Button::make('Guardar')
                 ->icon('check')
                 ->method('save'),
-            // ModalToggle::make('Summary')
+            // ModalToggle::make('Resumen')
             //     ->icon('eye')
             //     ->modal('showSummary'),
-
         ];
     }
 
     /**
-     * The screen's layout elements.
+     * Los elementos de diseño de la pantalla.
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
@@ -82,11 +81,11 @@ class PurchaseEditScreen extends Screen
         foreach ($products as $index => $product) {
             $productFields[] = Layout::rows([
                 Relation::make("products[$index]")
-                    ->title('Product')
+                    ->title('Producto')
                     ->fromModel(Products::class, 'name')
                     ->required(),
                 Input::make("quantities[$index]")
-                    ->title('Quantity')
+                    ->title('Cantidad')
                     ->type('number')
                     ->required()
                     ->step(1)
@@ -96,20 +95,20 @@ class PurchaseEditScreen extends Screen
 
         return [
             Layout::view('breadcrumbs', ['breadcrumbs' => [
-                ['name' => 'Home', 'route' => route('platform.main')],
-                ['name' => 'Purchases', 'route' => route('platform.purchase.list')],
-                ['name' => $this->purchase->exists ? 'Edit Purchase' : 'Create Purchase'],
+                ['name' => 'Inicio', 'route' => route('platform.main')],
+                ['name' => 'Compras', 'route' => route('platform.purchase.list')],
+                ['name' => $this->purchase->exists ? 'Editar Compra' : 'Crear Compra'],
             ]]),
             ...$productFields,
             Layout::rows([
-                Button::make('Add Another Product')
+                Button::make('Agregar Otro Producto')
                     ->icon('plus')
                     ->method('addProduct'),
             ]),
             Layout::modal(
                 'showSummary',
                 Layout::rows([
-                    
+                    // Aquí puedes agregar el contenido del modal si es necesario
                 ])
             )
                 ->withoutApplyButton()
@@ -118,7 +117,6 @@ class PurchaseEditScreen extends Screen
                 ->type(Modal::TYPE_RIGHT),
         ];
     }
-
 
     public function save(Request $request, Purchases $purchase)
     {
@@ -156,10 +154,10 @@ class PurchaseEditScreen extends Screen
 
             DB::commit();
 
-            Alert::info('You have successfully created/updated a purchase.');
+            Alert::info('Has creado/actualizado una compra con éxito.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Alert::error('An error occurred while saving the purchase: ' . $e->getMessage());
+            Alert::error('Ocurrió un error al guardar la compra: ' . $e->getMessage());
         }
 
         return redirect()->route('platform.purchase.list');

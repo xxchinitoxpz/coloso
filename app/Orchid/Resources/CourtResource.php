@@ -14,14 +14,14 @@ use Orchid\Screen\TD;
 class CourtResource extends Resource
 {
     /**
-     * The model the resource corresponds to.
+     * El modelo al que corresponde el recurso.
      *
      * @var string
      */
     public static $model = Court::class;
 
     /**
-     * Get the fields displayed by the resource.
+     * Obtén los campos que se mostrarán en el recurso.
      *
      * @return array
      */
@@ -30,26 +30,26 @@ class CourtResource extends Resource
         return [
 
             Input::make('court')
-                ->title('Court')
-                ->placeholder('Enter court here')
+                ->title('Cancha')
+                ->placeholder('Ingresa el nombre de la cancha aquí')
                 ->required(),
 
             CheckBox::make('state')
-                ->title('State')
-                ->placeholder('Is the court free?')
+                ->title('Estado')
+                ->placeholder('¿La cancha está libre?')
                 ->sendTrueOrFalse(),
 
             Select::make('type_court_id')
-                ->title('Type Court')
+                ->title('Tipo de Cancha')
                 ->options(TypeCourt::pluck('type_court', 'id')->toArray())
-                ->empty('Select Type Court')
+                ->empty('Selecciona el tipo de cancha')
                 ->required(),
 
         ];
     }
 
     /**
-     * Get the columns displayed by the resource.
+     * Obtén las columnas que se mostrarán en el recurso.
      *
      * @return TD[]
      */
@@ -58,30 +58,30 @@ class CourtResource extends Resource
         return [
             TD::make('id')->align(TD::ALIGN_CENTER),
 
-            TD::make('court', 'Court')
+            TD::make('court', 'Cancha')
                 ->sort()
                 ->render(function ($court) {
                     return $court->court;
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('type_court', 'Type Court')
+            TD::make('type_court', 'Tipo de Cancha')
                 ->render(function ($court) {
                     return $court->type_court ? $court->type_court->type_court : 'N/A';
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('state', 'State')
+            TD::make('state', 'Estado')
                 ->render(function ($court) {
-                    return $court->state ? 'Free' : 'Not free';
+                    return $court->state ? 'Libre' : 'No libre';
                 })
                 ->sort()->align(TD::ALIGN_CENTER),
 
 
-            TD::make('created_at', 'Date of creation')
+            TD::make('created_at', 'Fecha de creación')
                 ->render(function ($model) {
                     return $model->created_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
 
-            TD::make('updated_at', 'Update date')
+            TD::make('updated_at', 'Fecha de actualización')
                 ->render(function ($model) {
                     return $model->updated_at->toDateTimeString();
                 })->align(TD::ALIGN_CENTER),
@@ -89,7 +89,7 @@ class CourtResource extends Resource
     }
 
     /**
-     * Get the sights displayed by the resource.
+     * Obtén los detalles que se mostrarán en el recurso.
      *
      * @return Sight[]
      */
@@ -98,21 +98,21 @@ class CourtResource extends Resource
         return [
             Sight::make('id'),
             Sight::make('court'),
-            Sight::make('type_court', 'Type Court')
+            Sight::make('type_court', 'Tipo de Cancha')
                 ->render(function ($court) {
                     return $court->type_court ? $court->type_court->type_court : 'N/A';
                 }),
 
-            Sight::make('state', 'State')
+            Sight::make('state', 'Estado')
                 ->render(function ($court) {
-                    return $court->state ? 'Free' : 'Not free';
+                    return $court->state ? 'Libre' : 'No libre';
                 })
                 ->sort(),
         ];
     }
 
     /**
-     * Get the filters available for the resource.
+     * Obtén los filtros disponibles para el recurso.
      *
      * @return array
      */
@@ -122,7 +122,7 @@ class CourtResource extends Resource
     }
 
     /**
-     * Get the permission key for the resource.
+     * Obtén la clave de permiso para el recurso.
      *
      * @return string|null
      */
@@ -132,7 +132,7 @@ class CourtResource extends Resource
     }
 
     /**
-     * Get the number of models to return per page
+     * Obtén el número de modelos a devolver por página.
      *
      * @return int
      */
@@ -144,5 +144,15 @@ class CourtResource extends Resource
     public static function icon(): string
     {
         return 'dribbble'; // El ícono deseado
+    }
+
+    public static function label(): string
+    {
+        return __('Canchas');
+    }
+
+    public static function createButtonLabel(): string
+    {
+        return __('Crear cancha');
     }
 }
